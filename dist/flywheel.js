@@ -59,16 +59,90 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var flywheel = {
-	  greet: function greet() {
-	    var url = 'https://mobile.flywheel.com/search?by=location&filter=hailable&latitude=-0.00263777705226216' + '&longitude=-0.001884127044582407&auth_token=(null)';
+	var baseURL = 'https://mobile.flywheel.com';
 	
-	    fetch(url).then(function (r) {
+	var flywheel = {
+	  signup: function signup(_ref) {
+	    var firstName = _ref.firstName;
+	    var email = _ref.email;
+	    var password = _ref.password;
+	    var telephone = _ref.telephone;
+	    var _ref$latitude = _ref.latitude;
+	    var latitude = _ref$latitude === undefined ? 0 : _ref$latitude;
+	    var _ref$longitude = _ref.longitude;
+	    var longitude = _ref$longitude === undefined ? 0 : _ref$longitude;
+	
+	    if (firstName === undefined || email === undefined || password === undefined || telephone === undefined) {
+	      throw new Error('Missing parameter');
+	    }
+	
+	    var url = baseURL + '/passengers';
+	
+	    return fetch(url, {
+	      method: 'post',
+	      headers: {
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json'
+	      },
+	      body: JSON.stringify({
+	        first_name: firstName,
+	        email: email,
+	        password: password,
+	        telephone: telephone,
+	        latitude: latitude,
+	        longitude: longitude,
+	        adjust_xid_type: 'idfa',
+	        adjust_xid: '12345678-1234-1234-1234-123456789012',
+	        persistent_device_id: '12345678-1234-1234-1234-123456789012'
+	      })
+	    }).then(function (r) {
 	      return r.json();
-	    }).then(function (data) {
-	      return console.log(data);
-	    }).catch(function (e) {
-	      return console.log('Booo');
+	    });
+	  },
+	  search: function search(_ref2) {
+	    var _ref2$by = _ref2.by;
+	    var by = _ref2$by === undefined ? 'location' : _ref2$by;
+	    var _ref2$filter = _ref2.filter;
+	    var filter = _ref2$filter === undefined ? 'hailable' : _ref2$filter;
+	    var _ref2$latitude = _ref2.latitude;
+	    var latitude = _ref2$latitude === undefined ? 0 : _ref2$latitude;
+	    var _ref2$longitude = _ref2.longitude;
+	    var longitude = _ref2$longitude === undefined ? 0 : _ref2$longitude;
+	    var _ref2$authToken = _ref2.authToken;
+	    var authToken = _ref2$authToken === undefined ? '(null)' : _ref2$authToken;
+	
+	    var url = baseURL + '/search' + '?by=' + by + '&filter=' + filter + '&latitude=' + latitude + '&longitude=' + longitude + '&auth_token=' + authToken;
+	
+	    return fetch(url).then(function (r) {
+	      return r.json();
+	    });
+	  },
+	  login: function login(_ref3) {
+	    var email = _ref3.email;
+	    var password = _ref3.password;
+	
+	    if (email === undefined || password === undefined) {
+	      throw new Error('Missing parameter');
+	    }
+	    var url = baseURL + '/login';
+	    return fetch(url, {
+	      method: 'post',
+	      headers: {
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json'
+	      },
+	      body: JSON.stringify({
+	        email: email,
+	        password: password
+	      })
+	    }).then(function (r) {
+	      return r.json();
+	    });
+	  },
+	  applicationContext: function applicationContext(authToken) {
+	    var url = baseURL + '/application_context?application=Flywheel&' + 'platform=ios&version=5.6.7&platform_version=9.2.1&latitude=0&longitude=0&auth_token=' + authToken;
+	    return fetch(url).then(function (r) {
+	      return r.json();
 	    });
 	  }
 	};
