@@ -1,7 +1,6 @@
 global.chai = require('chai');
 global.sinon = require('sinon');
 global.chai.use(require('sinon-chai'));
-global.fetch = require('node-fetch');
 
 require('babel-core/register');
 require('./setup')();
