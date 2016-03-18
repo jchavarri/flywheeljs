@@ -56,13 +56,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
+	// Babel6 does not hack the default behaviour of ES Modules anymore, so we should export
+	
+	var flywheel = __webpack_require__(1).default;
+	
+	module.exports = flywheel;
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _es6Promise = __webpack_require__(1);
+	var _es6Promise = __webpack_require__(2);
 	
-	var _axios = __webpack_require__(6);
+	var _axios = __webpack_require__(7);
 	
 	var _axios2 = _interopRequireDefault(_axios);
 	
@@ -140,7 +152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = flywheel;
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
@@ -273,7 +285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function lib$es6$promise$asap$$attemptVertx() {
 	      try {
 	        var r = require;
-	        var vertx = __webpack_require__(4);
+	        var vertx = __webpack_require__(5);
 	        lib$es6$promise$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	        return lib$es6$promise$asap$$useVertxTimer();
 	      } catch(e) {
@@ -1086,7 +1098,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	
 	    /* global define:true module:true window: true */
-	    if ("function" === 'function' && __webpack_require__(5)['amd']) {
+	    if ("function" === 'function' && __webpack_require__(6)['amd']) {
 	      !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return lib$es6$promise$umd$$ES6Promise; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module !== 'undefined' && module['exports']) {
 	      module['exports'] = lib$es6$promise$umd$$ES6Promise;
@@ -1098,10 +1110,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 	
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), (function() { return this; }()), __webpack_require__(3)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), (function() { return this; }()), __webpack_require__(4)(module)))
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -1198,7 +1210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -1214,38 +1226,38 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(7);
+	module.exports = __webpack_require__(8);
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defaults = __webpack_require__(8);
-	var utils = __webpack_require__(9);
-	var dispatchRequest = __webpack_require__(10);
-	var InterceptorManager = __webpack_require__(18);
-	var isAbsoluteURL = __webpack_require__(19);
-	var combineURLs = __webpack_require__(20);
-	var bind = __webpack_require__(21);
-	var transformData = __webpack_require__(14);
+	var defaults = __webpack_require__(9);
+	var utils = __webpack_require__(10);
+	var dispatchRequest = __webpack_require__(11);
+	var InterceptorManager = __webpack_require__(19);
+	var isAbsoluteURL = __webpack_require__(20);
+	var combineURLs = __webpack_require__(21);
+	var bind = __webpack_require__(22);
+	var transformData = __webpack_require__(15);
 	
 	function Axios(defaultConfig) {
 	  this.defaults = utils.merge({}, defaultConfig);
@@ -1328,7 +1340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(22);
+	axios.spread = __webpack_require__(23);
 	
 	// Expose interceptors
 	axios.interceptors = defaultInstance.interceptors;
@@ -1359,12 +1371,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(10);
 	
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -1428,7 +1440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1678,7 +1690,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -1700,10 +1712,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        adapter = config.adapter;
 	      } else if (typeof XMLHttpRequest !== 'undefined') {
 	        // For browsers use XHR adapter
-	        adapter = __webpack_require__(11);
+	        adapter = __webpack_require__(12);
 	      } else if (typeof process !== 'undefined') {
 	        // For node use HTTP adapter
-	        adapter = __webpack_require__(11);
+	        adapter = __webpack_require__(12);
 	      }
 	
 	      if (typeof adapter === 'function') {
@@ -1716,20 +1728,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
-	var buildURL = __webpack_require__(12);
-	var parseHeaders = __webpack_require__(13);
-	var transformData = __webpack_require__(14);
-	var isURLSameOrigin = __webpack_require__(15);
-	var btoa = window.btoa || __webpack_require__(16);
+	var utils = __webpack_require__(10);
+	var buildURL = __webpack_require__(13);
+	var parseHeaders = __webpack_require__(14);
+	var transformData = __webpack_require__(15);
+	var isURLSameOrigin = __webpack_require__(16);
+	var btoa = window.btoa || __webpack_require__(17);
 	
 	module.exports = function xhrAdapter(resolve, reject, config) {
 	  var requestData = config.data;
@@ -1804,7 +1816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // This is only done if running in a standard browser environment.
 	  // Specifically not if we're in a web worker, or react-native.
 	  if (utils.isStandardBrowserEnv()) {
-	    var cookies = __webpack_require__(17);
+	    var cookies = __webpack_require__(18);
 	
 	    // Add xsrf header
 	    var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ?
@@ -1855,12 +1867,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(10);
 	
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -1928,12 +1940,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(10);
 	
 	/**
 	 * Parse headers into an object
@@ -1971,12 +1983,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(10);
 	
 	/**
 	 * Transform the data for a request or a response
@@ -1997,12 +2009,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(10);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -2071,7 +2083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2113,12 +2125,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(10);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -2172,12 +2184,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(10);
 	
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -2230,7 +2242,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2250,7 +2262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2268,7 +2280,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2285,7 +2297,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';

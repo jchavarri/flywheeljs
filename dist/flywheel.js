@@ -47,13 +47,25 @@ module.exports =
 
 	'use strict';
 	
+	// Babel6 does not hack the default behaviour of ES Modules anymore, so we should export
+	
+	var flywheel = __webpack_require__(1).default;
+	
+	module.exports = flywheel;
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _es6Promise = __webpack_require__(1);
+	var _es6Promise = __webpack_require__(2);
 	
-	var _axios = __webpack_require__(2);
+	var _axios = __webpack_require__(3);
 	
 	var _axios2 = _interopRequireDefault(_axios);
 	
@@ -131,13 +143,13 @@ module.exports =
 	exports.default = flywheel;
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports) {
 
 	module.exports = require("es6-promise");
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	module.exports = require("axios");
