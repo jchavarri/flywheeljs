@@ -15,9 +15,12 @@ describe('flywheel', () => {
         latitude: fixture.latitude,
         longitude: fixture.longitude
       })
-      .then(data => {
-        expect(data.error).to.exist;
-        authToken = data.auth_token;
+      .then(response => {
+        expect(response.data.error).to.exist;
+        done();
+      })
+      .catch(response => {
+        expect(response.data.error).to.exist;
         done();
       });
     });
@@ -33,8 +36,8 @@ describe('flywheel', () => {
         latitude: fixture.latitude,
         longitude: fixture.longitude
       })
-      .then(data => {
-        expect(data.drivers).to.exist;
+      .then(response => {
+        expect(response.data.drivers).to.exist;
         done();
       });
     });
@@ -46,9 +49,8 @@ describe('flywheel', () => {
         email: fixture.email,
         password: fixture.password
       })
-      .then(data => {
-        expect(data.auth_token).to.exist;
-        authToken = data.auth_token;
+      .then(response => {
+        expect(response.data.auth_token).to.exist;
         done();
       });
     });
@@ -57,8 +59,8 @@ describe('flywheel', () => {
   describe('Application context function', () => {
     it('should return services availabilities', (done) => {
       flywheel.applicationContext(authToken)
-      .then(data => {
-        expect(data.service_availabilities).to.exist;
+      .then(response => {
+        expect(response.data.service_availabilities).to.exist;
         done();
       });
     });
