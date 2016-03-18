@@ -7,6 +7,8 @@ import {Instrumenter} from 'isparta';
 import webpack from 'webpack';
 import webpackStream from 'webpack-stream';
 import source  from 'vinyl-source-stream';
+import es from 'event-stream';
+import nodeExternals from 'webpack-node-externals';
 
 import mochaGlobals from './test/setup/.globals';
 import manifest  from './package.json';
@@ -58,12 +60,40 @@ function lintGulpfile() {
 }
 
 function build() {
-  return gulp.src(path.join('src', config.entryFileName + '.js'))
-    .pipe($.plumber())
+
+  var source = gulp.src(path.join('src', config.entryFileName + '.js'))
+    .pipe($.plumber());
+
+  var browser = source
     .pipe(webpackStream({
       output: {
-        filename: exportFileName + '.js',
+        filename: exportFileName + '-browser.js',
         libraryTarget: 'umd',
+        library: config.mainVarName
+      },
+      module: {
+        loaders: [
+          { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+          { test: /\.json$/, loader: 'json-loader' }
+        ]
+      },
+      devtool: 'source-map'
+    }))
+    .pipe(gulp.dest(destinationFolder))
+    .pipe($.filter(['*', '!**/*.js.map']))
+    .pipe($.rename(exportFileName + '-browser.min.js'))
+    .pipe($.sourcemaps.init({ loadMaps: true }))
+    .pipe($.uglify())
+    .pipe($.sourcemaps.write('./'))
+    .pipe(gulp.dest(destinationFolder));
+
+  var node = source
+    .pipe(webpackStream({
+      target: 'node',
+      externals: [nodeExternals()],
+      output: {
+        filename: exportFileName + '.js',
+        libraryTarget: 'commonjs2',
         library: config.mainVarName
       },
       module: {
@@ -81,6 +111,11 @@ function build() {
     .pipe($.uglify())
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest(destinationFolder));
+
+  return es.merge(
+    browser,
+    node
+  );
 }
 
 function _mocha() {
