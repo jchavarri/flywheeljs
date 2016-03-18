@@ -61,10 +61,10 @@ function lintGulpfile() {
 
 function build() {
 
-  var source = gulp.src(path.join('src', config.entryFileName + '.js'))
-    .pipe($.plumber());
+  var source = gulp.src(path.join('src', config.entryFileName + '.js'));
 
   var browser = source
+    .pipe($.plumber())
     .pipe(webpackStream({
       output: {
         filename: exportFileName + '-browser.js',
@@ -88,6 +88,7 @@ function build() {
     .pipe(gulp.dest(destinationFolder));
 
   var node = source
+    .pipe($.plumber())
     .pipe(webpackStream({
       target: 'node',
       externals: [nodeExternals()],
