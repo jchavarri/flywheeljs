@@ -28,6 +28,8 @@ Pull requests are welcomed. To get started:
 
 ## Todo
 
+- [ ] split build to have node and browser versions
+- [ ] use axios params instead of harcoded strings for get requests
 - [ ] refine 'search' function params
 - [ ] add trip request function
 - [ ] gather information about other missing features (cancel request, add card, etc)
