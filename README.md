@@ -1,6 +1,6 @@
 # flywheeljs
 
-A Javascript interface to the Flywheel REST API
+A Javascript wrapper to the [Flywheel](http://flywheel.com/) REST API, for both NodeJS and the browser.
 
 [![Travis build status](http://img.shields.io/travis/jchavarri/flywheeljs.svg?style=flat)](https://travis-ci.org/jchavarri/flywheeljs)
 [![Code Climate](https://codeclimate.com/github/jchavarri/flywheeljs/badges/gpa.svg)](https://codeclimate.com/github/jchavarri/flywheeljs)
@@ -14,9 +14,16 @@ A Javascript interface to the Flywheel REST API
 
 The library is in a very early stage of development and is not suitable for usage yet.
 
-## Compatibility
+[comment]: <> (## Install)
 
-flywheeljs goal is to be a NodeJS + BrowserJS compatible library.
+[comment]: <> (- NodeJS / Browserify: `npm install flywheeljs --save`)
+
+[comment]: <> (- 1998 script tag: [TODO])
+
+## Promises
+
+flywheeljs depends on a native ES6 Promise implementation to be [supported](http://caniuse.com/promises).
+If your environment doesn't support ES6 Promises, you can [polyfill](https://github.com/jakearchibald/es6-promise).
 
 ## Contributing
 
@@ -28,10 +35,13 @@ Pull requests are welcomed. To get started:
 
 ## Todo
 
-- [ ] split build to have node and browser versions
+- [x] split build to have node and browser versions
+- [x] gather information about other missing features (cancel request, add card, etc)
+- [ ] add link to Flywheel site
+- [ ] stop tracking 'dist' folder in git
 - [ ] use axios params instead of harcoded strings for get requests
 - [ ] refine 'search' function params
 - [ ] add trip request function
-- [ ] gather information about other missing features (cancel request, add card, etc)
 - [ ] increase test coverage
 - [ ] documentation
+- [ ] publish to npm
