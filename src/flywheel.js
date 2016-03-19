@@ -42,16 +42,17 @@ const flywheel = {
     });
   },
 
-  applicationContext(authToken) {
+  applicationContext({authToken}) {
     const url = baseURL + '/application_context?application=Flywheel&' +
     'platform=ios&version=5.6.7&platform_version=9.2.1&latitude=0&longitude=0&auth_token=' + authToken;
     return axios.get(url);
   },
 
-  userInfo(userId, authToken) {
+  userInfo({userId, authToken}) {
     const url = baseURL + '/passengers/' + userId + '?auth_token=' + authToken;
     return axios.get(url);
   }
+
 };
 
 export default flywheel;

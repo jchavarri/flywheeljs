@@ -37,11 +37,12 @@ Pull requests are welcomed. To get started:
 
 - [x] split build to have node and browser versions
 - [x] gather information about other missing features (cancel request, add card, etc)
-- [ ] add link to Flywheel site
-- [ ] stop tracking 'dist' folder in git
+- [x] add link to Flywheel site
+- [x] stop tracking 'dist' folder in git
 - [ ] use axios params instead of harcoded strings for get requests
 - [ ] refine 'search' function params
 - [ ] add trip request function
 - [ ] increase test coverage
 - [ ] documentation
+- [ ] 'examples' folder
 - [ ] publish to npm

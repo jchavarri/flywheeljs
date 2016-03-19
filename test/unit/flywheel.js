@@ -62,7 +62,9 @@ describe('flywheel', () => {
 
   describe('Application context function', () => {
     it('should return services availabilities', (done) => {
-      flywheel.applicationContext(authToken)
+      flywheel.applicationContext({
+        authToken: authToken
+      })
       .then(response => {
         expect(response.data.service_availabilities).to.exist;
         done();
@@ -72,7 +74,10 @@ describe('flywheel', () => {
 
   describe('User info function', () => {
     it('should return payment instruments', (done) => {
-      flywheel.userInfo(userId, authToken)
+      flywheel.userInfo({
+        userId: userId,
+        authToken: authToken
+      })
       .then(response => {
         expect(response.data.payment_instruments).to.exist;
         done();
