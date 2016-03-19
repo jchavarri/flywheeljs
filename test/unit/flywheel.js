@@ -25,6 +25,9 @@ describe('flywheel', () => {
         done();
       });
     });
+    it('should return an error if parameters are missing', () => {
+      expect(() => flywheel.signup({})).to.throw(Error);
+    });
   });
 
   describe('Search function', () => {
@@ -57,6 +60,9 @@ describe('flywheel', () => {
         userId = response.data.passenger.id;
         done();
       });
+    });
+    it('should return an error if parameters are missing', () => {
+      expect(() => flywheel.login({})).to.throw(Error);
     });
   });
 

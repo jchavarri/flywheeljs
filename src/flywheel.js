@@ -8,9 +8,7 @@ const flywheel = {
     if (firstName === undefined || email === undefined || password === undefined || telephone === undefined) {
       throw new Error('Missing parameter');
     }
-
     const url = baseURL + '/passengers';
-
     return axios.post(url, {
       first_name: firstName,
       email: email,
