@@ -3,5 +3,5 @@
   "maximumLineLength": null,
   "esnext": true,
   "disallowSpacesInsideObjectBrackets": null,
-  "requireCamelCaseOrUpperCaseIdentifiers": {"allExcept": ["auth_token", "service_availabilities", "first_name", "adjust_xid_type", "adjust_xid", "persistent_device_id", "payment_instruments"]}
+  "requireCamelCaseOrUpperCaseIdentifiers": {"allExcept": ["auth_token", "service_availabilities", "first_name", "adjust_xid_type", "adjust_xid", "persistent_device_id", "payment_instruments", "platform_version"]}
 }

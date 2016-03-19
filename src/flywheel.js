@@ -25,10 +25,16 @@ const flywheel = {
   },
 
   search({by='location', filter='hailable', latitude=0, longitude=0, authToken='(null)'}) {
-    const url = baseURL + '/search' + '?by=' + by + '&filter=' + filter + '&latitude=' +
-    latitude + '&longitude=' + longitude + '&auth_token=' + authToken;
-
-    return axios.get(url);
+    const url = baseURL + '/search';
+    return axios.get(url, {
+      params: {
+        by: by,
+        filter: filter,
+        latitude: latitude,
+        longitude: longitude,
+        auth_token: authToken
+      }
+    });
   },
 
   login({email, password}) {
@@ -43,14 +49,27 @@ const flywheel = {
   },
 
   applicationContext({authToken}) {
-    const url = baseURL + '/application_context?application=Flywheel&' +
-    'platform=ios&version=5.6.7&platform_version=9.2.1&latitude=0&longitude=0&auth_token=' + authToken;
-    return axios.get(url);
+    const url = baseURL + '/application_context';
+    return axios.get(url, {
+      params: {
+        application: 'Flywheel',
+        platform: 'ios',
+        version: '5.6.7',
+        platform_version: '9.2.1',
+        latitude: 0,
+        longitude: 0,
+        auth_token: authToken
+      }
+    });
   },
 
   userInfo({userId, authToken}) {
-    const url = baseURL + '/passengers/' + userId + '?auth_token=' + authToken;
-    return axios.get(url);
+    const url = baseURL + '/passengers/' + userId;
+    return axios.get(url, {
+      params: {
+        auth_token: authToken
+      }
+    });
   }
 
 };

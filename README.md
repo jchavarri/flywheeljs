@@ -39,7 +39,7 @@ Pull requests are welcomed. To get started:
 - [x] gather information about other missing features (cancel request, add card, etc)
 - [x] add link to Flywheel site
 - [x] stop tracking 'dist' folder in git
-- [ ] use axios params instead of harcoded strings for get requests
+- [x] use axios params instead of harcoded strings for get requests
 - [ ] refine 'search' function params
 - [ ] add trip request function
 - [ ] increase test coverage
