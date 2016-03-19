@@ -4,6 +4,7 @@ import {fixture} from '../setup/.fixture.json';
 describe('flywheel', () => {
 
   var authToken;
+  var userId;
 
   describe('Signup function', () => {
     it('should return an error when the user exists', (done) => {
@@ -51,6 +52,9 @@ describe('flywheel', () => {
       })
       .then(response => {
         expect(response.data.auth_token).to.exist;
+        expect(response.data.passenger.id).to.exist;
+        authToken = response.data.auth_token;
+        userId = response.data.passenger.id;
         done();
       });
     });
@@ -61,6 +65,16 @@ describe('flywheel', () => {
       flywheel.applicationContext(authToken)
       .then(response => {
         expect(response.data.service_availabilities).to.exist;
+        done();
+      });
+    });
+  });
+
+  describe('User info function', () => {
+    it('should return payment instruments', (done) => {
+      flywheel.userInfo(userId, authToken)
+      .then(response => {
+        expect(response.data.payment_instruments).to.exist;
         done();
       });
     });
