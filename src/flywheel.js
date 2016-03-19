@@ -70,6 +70,17 @@ const flywheel = {
         auth_token: authToken
       }
     });
+  },
+
+  eta({origin, destination, authToken}) {
+    const url = baseURL + '/eta';
+    return axios.get(url, {
+      params: {
+        origins: origin,
+        destinations: destination,
+        auth_token: authToken
+      }
+    });
   }
 
 };

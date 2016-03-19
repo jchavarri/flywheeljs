@@ -84,4 +84,19 @@ describe('flywheel', () => {
       });
     });
   });
+
+  describe('ETA function', () => {
+    it('should return duration and distance', (done) => {
+      flywheel.eta({
+        origin: fixture.origin,
+        destination: fixture.destination,
+        authToken: authToken
+      })
+      .then(response => {
+        expect(response.data.response[0].distance).to.exist;
+        expect(response.data.response[0].duration).to.exist;
+        done();
+      });
+    });
+  });
 });

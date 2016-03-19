@@ -5,6 +5,8 @@
     "password": "afx84gjgJ",
     "telephone": "0012345678901",
     "latitude": 37.773972,
-    "longitude": -122.431297
+    "longitude": -122.431297,
+    "origin": "37.648622,-122.450145",
+    "destination": "37.663732,-122.432433"
   }
 }
