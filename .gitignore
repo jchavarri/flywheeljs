@@ -24,3 +24,5 @@ tmp
 .node_repl_history
 
 .env
+
+dist/
