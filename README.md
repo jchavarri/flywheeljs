@@ -14,11 +14,11 @@ A Javascript wrapper to the [Flywheel](http://flywheel.com/) REST API, for both 
 
 The library is in a very early stage of development and is not suitable for usage yet.
 
-[comment]: <> (## Install)
+[](## Install)
 
-[comment]: <> (- NodeJS / Browserify: `npm install flywheeljs --save`)
+[](- NodeJS / Browserify: `npm install flywheeljs --save`)
 
-[comment]: <> (- 1998 script tag: [TODO])
+[](- 1998 script tag: [TODO])
 
 ## Promises
 
