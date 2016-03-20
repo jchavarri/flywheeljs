@@ -64,6 +64,13 @@ function build() {
   var source = gulp.src(path.join('src', 'index.js'))
     .pipe($.plumber());
 
+  var module = {
+    loaders: [
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+      { test: /\.json$/, loader: 'json-loader' }
+    ]
+  };
+
   var browser = source
     .pipe(webpackStream({
       output: {
@@ -71,12 +78,7 @@ function build() {
         libraryTarget: 'umd',
         library: config.mainVarName
       },
-      module: {
-        loaders: [
-          { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
-          { test: /\.json$/, loader: 'json-loader' }
-        ]
-      },
+      module: module,
       devtool: 'source-map'
     }))
     .pipe(gulp.dest(destinationFolder))
@@ -96,12 +98,7 @@ function build() {
         libraryTarget: 'commonjs2',
         library: config.mainVarName
       },
-      module: {
-        loaders: [
-          { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
-          { test: /\.json$/, loader: 'json-loader' }
-        ]
-      },
+      module: module,
       devtool: 'source-map'
     }))
     .pipe(gulp.dest(destinationFolder))

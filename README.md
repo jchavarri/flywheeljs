@@ -31,7 +31,7 @@ Pull requests are welcomed. To get started:
 
 - Download or clone the repo
 - `npm install`
-- `npm run test-browser`, you can open `runner.html` file to see run the test in a browser
+- `npm run test-browser`, you can open `runner.html` file to see run the tests in the browser
 
 ## Todo
 
@@ -40,9 +40,9 @@ Pull requests are welcomed. To get started:
 - [x] add link to Flywheel site
 - [x] stop tracking 'dist' folder in git
 - [x] use axios params instead of harcoded strings for get requests
-- [ ] refine 'search' function params
-- [ ] add trip request function
-- [ ] increase test coverage
+- [x] add trip request function
+- [x] increase test coverage
+- [ ] add delayed trip request
 - [ ] documentation
 - [ ] 'examples' folder
 - [ ] use npm instead of gulp (see this [library boilerplate](https://github.com/gaearon/library-boilerplate))

@@ -129,12 +129,13 @@ const flywheel = {
     if (rideId === undefined || authToken === undefined) {
       throw new Error('Missing parameter');
     }
-    const url = baseURL + '/rides/' + rideId + '/cancellation_contract';
+    const ridesUrl = baseURL + '/rides/';
+    const url = ridesUrl + rideId + '/cancellation_contract';
     return axios.post(url, {
       auth_token: authToken
     })
     .then(response => {
-      const url = baseURL + '/rides/' + rideId;
+      const url = ridesUrl + rideId;
       return axios.put(url, {
         status: 'canceled',
         auth_token: authToken
