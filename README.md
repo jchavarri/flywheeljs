@@ -45,4 +45,5 @@ Pull requests are welcomed. To get started:
 - [ ] increase test coverage
 - [ ] documentation
 - [ ] 'examples' folder
+- [ ] use npm instead of gulp (see this [library boilerplate](https://github.com/gaearon/library-boilerplate))
 - [ ] publish to npm

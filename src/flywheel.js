@@ -62,6 +62,9 @@ const flywheel = {
   },
 
   userInfo({userId, authToken}) {
+    if (userId === undefined || authToken === undefined) {
+      throw new Error('Missing parameter');
+    }
     const url = baseURL + '/passengers/' + userId;
     return axios.get(url, {
       params: {
@@ -79,7 +82,48 @@ const flywheel = {
         auth_token: authToken
       }
     });
-  }
+  },
+
+  createRide({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesIds, tip=500, authToken='(null)', notes=''}) {
+    if (pickUpLat === undefined || pickUpLon === undefined || passenger === undefined || paymentToken === undefined || serviceAvailabilitiesIds === undefined) {
+      throw new Error('Missing parameter');
+    }
+    const url = baseURL + '/rides';
+    const source = 'Mobile:iOS:5.6.7:Flywheel';
+    const now = new Date();
+    const clientCreatedAt = now.toISOString().replace(/T/g,'-').slice(0, -5);
+    return axios.post(url, {
+      source: source,
+      pick_up_location: {
+        latitude: pickUpLat,
+        longitude: pickUpLon
+      },
+      guaranteed_tip_details: {
+        type: 'cents',
+        amount: tip
+      },
+      notes: notes,
+      requirements: {service_availability_ids: serviceAvailabilitiesIds},
+      passenger: passenger,
+      auth_token: authToken,
+      payment_instrument: {
+        token: paymentToken
+      },
+      client_created_at: clientCreatedAt
+    });
+  },
+
+  getRideStatus({rideId, authToken}) {
+    if (rideId === undefined || authToken === undefined) {
+      throw new Error('Missing parameter');
+    }
+    const url = baseURL + '/rides/' + rideId;
+    return axios.get(url, {
+      params: {
+        auth_token: authToken
+      }
+    });
+  },
 
 };
 
