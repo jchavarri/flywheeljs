@@ -46,7 +46,7 @@ const flywheel = {
     });
   },
 
-  applicationContext({authToken}) {
+  applicationContext({authToken, latitude=0, longitude=0}) {
     const url = baseURL + '/application_context';
     return axios.get(url, {
       params: {
@@ -54,8 +54,8 @@ const flywheel = {
         platform: 'ios',
         version: '5.6.7',
         platform_version: '9.2.1',
-        latitude: 0,
-        longitude: 0,
+        latitude: latitude,
+        longitude: longitude,
         auth_token: authToken
       }
     });
@@ -84,8 +84,8 @@ const flywheel = {
     });
   },
 
-  createRide({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesIds, tip=500, authToken='(null)', notes=''}) {
-    if (pickUpLat === undefined || pickUpLon === undefined || passenger === undefined || paymentToken === undefined || serviceAvailabilitiesIds === undefined) {
+  createRide({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId, tip=500, authToken='(null)', notes=''}) {
+    if (pickUpLat === undefined || pickUpLon === undefined || passenger === undefined || paymentToken === undefined || serviceAvailabilitiesId === undefined) {
       throw new Error('Missing parameter');
     }
     const url = baseURL + '/rides';
@@ -103,7 +103,7 @@ const flywheel = {
         amount: tip
       },
       notes: notes,
-      requirements: {service_availability_ids: serviceAvailabilitiesIds},
+      requirements: {service_availability_ids: [serviceAvailabilitiesId]},
       passenger: passenger,
       auth_token: authToken,
       payment_instrument: {
@@ -122,6 +122,23 @@ const flywheel = {
       params: {
         auth_token: authToken
       }
+    });
+  },
+
+  cancelRide({rideId, authToken}) {
+    if (rideId === undefined || authToken === undefined) {
+      throw new Error('Missing parameter');
+    }
+    const url = baseURL + '/rides/' + rideId + '/cancellation_contract';
+    return axios.post(url, {
+      auth_token: authToken
+    })
+    .then(response => {
+      const url = baseURL + '/rides/' + rideId;
+      return axios.put(url, {
+        status: 'canceled',
+        auth_token: authToken
+      });
     });
   },
 

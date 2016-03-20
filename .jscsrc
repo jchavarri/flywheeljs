@@ -3,5 +3,5 @@
   "maximumLineLength": null,
   "esnext": true,
   "disallowSpacesInsideObjectBrackets": null,
-  "requireCamelCaseOrUpperCaseIdentifiers": {"allExcept": ["auth_token", "service_availabilities", "first_name", "adjust_xid_type", "adjust_xid", "persistent_device_id", "payment_instruments", "platform_version", "pick_up_location", "guaranteed_tip_details", "service_availability_ids", "payment_instrument", "client_created_at"]}
+  "requireCamelCaseOrUpperCaseIdentifiers": {"allExcept": ["auth_token", "service_availabilities", "first_name", "adjust_xid_type", "adjust_xid", "persistent_device_id", "payment_instruments", "platform_version", "pick_up_location", "guaranteed_tip_details", "service_availability_ids", "payment_instrument", "client_created_at", "additional_information", "ride_id"]}
 }
