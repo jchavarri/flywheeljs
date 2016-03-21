@@ -2,12 +2,22 @@ import axios from 'axios';
 
 const baseURL = 'https://mobile.flywheel.com';
 
+const _verifyRequiredParams = function(params) {
+  const missingParams = [];
+  Object.keys(params).forEach(function(key) {
+    if (!params[key]) {
+      missingParams.push(key);
+    }
+  });
+  if (missingParams.length > 0) {
+    throw new Error('Missing parameters: ' + missingParams);
+  }
+};
+
 const flywheel = {
 
-  signup({firstName, email, password, telephone, latitude=0, longitude=0}) {
-    if (firstName === undefined || email === undefined || password === undefined || telephone === undefined) {
-      throw new Error('Missing parameter');
-    }
+  signup({firstName, email, password, telephone, latitude=0, longitude=0} = {}) {
+    _verifyRequiredParams({firstName: firstName, email: email, password: password, telephone: telephone});
     const url = baseURL + '/passengers';
     return axios.post(url, {
       first_name: firstName,
@@ -36,9 +46,7 @@ const flywheel = {
   },
 
   login({email, password}) {
-    if (email === undefined || password === undefined) {
-      throw new Error('Missing parameter');
-    }
+    _verifyRequiredParams({email: email, password: password});
     const url = baseURL + '/login';
     return axios.post(url, {
       email: email,
@@ -62,9 +70,7 @@ const flywheel = {
   },
 
   userInfo({userId, authToken}) {
-    if (userId === undefined || authToken === undefined) {
-      throw new Error('Missing parameter');
-    }
+    _verifyRequiredParams({userId: userId, authToken: authToken});
     const url = baseURL + '/passengers/' + userId;
     return axios.get(url, {
       params: {
@@ -85,9 +91,7 @@ const flywheel = {
   },
 
   createRide({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId, tip=500, authToken='(null)', notes=''}) {
-    if (pickUpLat === undefined || pickUpLon === undefined || passenger === undefined || paymentToken === undefined || serviceAvailabilitiesId === undefined) {
-      throw new Error('Missing parameter');
-    }
+    _verifyRequiredParams({pickUpLat: pickUpLat, pickUpLon: pickUpLon, passenger: passenger, paymentToken: paymentToken, serviceAvailabilitiesId: serviceAvailabilitiesId});
     const url = baseURL + '/rides';
     const source = 'Mobile:iOS:5.6.7:Flywheel';
     const now = new Date();
@@ -114,9 +118,7 @@ const flywheel = {
   },
 
   getRideStatus({rideId, authToken}) {
-    if (rideId === undefined || authToken === undefined) {
-      throw new Error('Missing parameter');
-    }
+    _verifyRequiredParams({rideId: rideId, authToken: authToken});
     const url = baseURL + '/rides/' + rideId;
     return axios.get(url, {
       params: {
@@ -126,9 +128,7 @@ const flywheel = {
   },
 
   cancelRide({rideId, authToken}) {
-    if (rideId === undefined || authToken === undefined) {
-      throw new Error('Missing parameter');
-    }
+    _verifyRequiredParams({rideId: rideId, authToken: authToken});
     const ridesUrl = baseURL + '/rides/';
     const url = ridesUrl + rideId + '/cancellation_contract';
     return axios.post(url, {
