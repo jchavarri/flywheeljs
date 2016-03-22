@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const baseURL = 'https://mobile.flywheel.com';
+const ax = axios.create({
+  baseURL: 'https://mobile.flywheel.com',
+});
 
 const _verifyRequiredParams = function(params) {
   const missingParams = [];
@@ -14,12 +16,19 @@ const _verifyRequiredParams = function(params) {
   }
 };
 
+/**
+ * This is the main function
+*/
 const flywheel = {
 
+  /**
+   * @param {String} [firstName] the first param
+   * @param {String} [email] the second param
+   * @returns {String} the result
+  */
   signup({firstName, email, password, telephone, latitude=0, longitude=0} = {}) {
-    _verifyRequiredParams({firstName: firstName, email: email, password: password, telephone: telephone});
-    const url = baseURL + '/passengers';
-    return axios.post(url, {
+    _verifyRequiredParams({firstName, email, password, telephone});
+    return ax.post('/passengers', {
       first_name: firstName,
       email: email,
       password: password,
@@ -32,9 +41,13 @@ const flywheel = {
     });
   },
 
+  /**
+   * @param {String} [by] The field to search by
+   * @param {String} [filter] A filter to be applied to the search request
+   * @returns {Object} An object
+  */
   search({by='location', filter='hailable', latitude=0, longitude=0, authToken='(null)'}) {
-    const url = baseURL + '/search';
-    return axios.get(url, {
+    return ax.get('/search', {
       params: {
         by: by,
         filter: filter,
@@ -46,17 +59,15 @@ const flywheel = {
   },
 
   login({email, password}) {
-    _verifyRequiredParams({email: email, password: password});
-    const url = baseURL + '/login';
-    return axios.post(url, {
+    _verifyRequiredParams({email, password});
+    return ax.post('/login', {
       email: email,
       password: password
     });
   },
 
   applicationContext({authToken, latitude=0, longitude=0}) {
-    const url = baseURL + '/application_context';
-    return axios.get(url, {
+    return ax.get('/application_context', {
       params: {
         application: 'Flywheel',
         platform: 'ios',
@@ -70,9 +81,8 @@ const flywheel = {
   },
 
   userInfo({userId, authToken}) {
-    _verifyRequiredParams({userId: userId, authToken: authToken});
-    const url = baseURL + '/passengers/' + userId;
-    return axios.get(url, {
+    _verifyRequiredParams({userId, authToken});
+    return ax.get('/passengers/' + userId, {
       params: {
         auth_token: authToken
       }
@@ -80,8 +90,7 @@ const flywheel = {
   },
 
   eta({origin, destination, authToken}) {
-    const url = baseURL + '/eta';
-    return axios.get(url, {
+    return ax.get('/eta', {
       params: {
         origins: origin,
         destinations: destination,
@@ -91,13 +100,10 @@ const flywheel = {
   },
 
   createRide({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId, tip=500, authToken='(null)', notes=''}) {
-    _verifyRequiredParams({pickUpLat: pickUpLat, pickUpLon: pickUpLon, passenger: passenger, paymentToken: paymentToken, serviceAvailabilitiesId: serviceAvailabilitiesId});
-    const url = baseURL + '/rides';
-    const source = 'Mobile:iOS:5.6.7:Flywheel';
-    const now = new Date();
-    const clientCreatedAt = now.toISOString().replace(/T/g,'-').slice(0, -5);
-    return axios.post(url, {
-      source: source,
+    _verifyRequiredParams({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId});
+    const clientCreatedAt = new Date().toISOString().replace(/T/g,'-').slice(0, -5);
+    return ax.post('/rides', {
+      source: 'Mobile:iOS:5.6.7:Flywheel',
       pick_up_location: {
         latitude: pickUpLat,
         longitude: pickUpLon
@@ -118,9 +124,8 @@ const flywheel = {
   },
 
   getRideStatus({rideId, authToken}) {
-    _verifyRequiredParams({rideId: rideId, authToken: authToken});
-    const url = baseURL + '/rides/' + rideId;
-    return axios.get(url, {
+    _verifyRequiredParams({rideId, authToken});
+    return ax.get('/rides/' + rideId, {
       params: {
         auth_token: authToken
       }
@@ -128,15 +133,13 @@ const flywheel = {
   },
 
   cancelRide({rideId, authToken}) {
-    _verifyRequiredParams({rideId: rideId, authToken: authToken});
-    const ridesUrl = baseURL + '/rides/';
-    const url = ridesUrl + rideId + '/cancellation_contract';
-    return axios.post(url, {
+    _verifyRequiredParams({rideId, authToken});
+    return ax.post('/rides/' + rideId + '/cancellation_contract', {
       auth_token: authToken
     })
     .then(response => {
       const url = ridesUrl + rideId;
-      return axios.put(url, {
+      return ax.put(url, {
         status: 'canceled',
         auth_token: authToken
       });
