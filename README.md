@@ -29,7 +29,9 @@ If your environment doesn't support ES6 Promises, you can [polyfill](https://git
 
 ### search
 
-[src/flywheel.js:74-84](https://github.com/jchavarri/flywheeljs/blob/36f38f1fc263dfe84f38f17166957856213346b8/src/flywheel.js#L74-L84 "Source code on GitHub")
+[src/flywheel.js:77-87](https://github.com/jchavarri/flywheeljs/blob/c46454c6f5e0cbcc907b51bec3f14f269d7d79b9/src/flywheel.js#L77-L87 "Source code on GitHub")
+
+Search cabs
 
 **Parameters**
 
@@ -46,7 +48,7 @@ Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refere
 
 ### signup
 
-[src/flywheel.js:49-62](https://github.com/jchavarri/flywheeljs/blob/36f38f1fc263dfe84f38f17166957856213346b8/src/flywheel.js#L49-L62 "Source code on GitHub")
+[src/flywheel.js:50-63](https://github.com/jchavarri/flywheeljs/blob/c46454c6f5e0cbcc907b51bec3f14f269d7d79b9/src/flywheel.js#L50-L63 "Source code on GitHub")
 
 Register a new user on the Flywheel service
 
