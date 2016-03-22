@@ -20,6 +20,7 @@ const flywheel = {
 
   /**
    * Register a new user on the Flywheel service
+   *
    * @example
    * flywheel.signup({
    *   firstName: 'John',
@@ -62,6 +63,8 @@ const flywheel = {
   },
 
   /**
+   * Search cabs
+   *
    * @param {Object} $0 - Options object parameter
    * @param {String} [$0.by='location'] The field to search by
    * @param {String} [$0.filter='hailable'] A filter to be applied to the search request
