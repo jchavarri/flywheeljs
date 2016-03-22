@@ -9,7 +9,8 @@
     "test-browser": "gulp test-browser",
     "watch": "gulp watch",
     "build": "gulp build",
-    "coverage": "gulp coverage"
+    "coverage": "gulp coverage",
+    "docs": "documentation readme src/flywheel.js -s 'Documentation' --github"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "babel-register": "^6.3.13",
     "chai": "^3.4.1",
     "del": "^2.2.0",
+    "documentation": "^4.0.0-beta1",
     "event-stream": "^3.3.2",
     "glob": "^6.0.3",
     "gulp": "^3.9.0",

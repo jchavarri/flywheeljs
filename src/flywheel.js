@@ -16,15 +16,35 @@ const _verifyRequiredParams = function(params) {
   }
 };
 
-/**
- * This is the main function
-*/
 const flywheel = {
 
   /**
-   * @param {String} [firstName] the first param
-   * @param {String} [email] the second param
-   * @returns {String} the result
+   * Register a new user on the Flywheel service
+   * @example
+   * flywheel.signup({
+   *   firstName: 'John',
+   *   email: 'john@doe.com',
+   *   password: 'johndoe123',
+   *   telephone: 'johndoe123',
+   *   latitude: 37.7,
+   *   longitude: -122.4
+   * })
+   * .then(response => {
+   *   console.log(response.data.passenger);
+   * })
+   * .catch(response => {
+   *   console.log(response.data.error);
+   * });
+   * @param {Object} $0 - Options object parameter
+   * @param {String} $0.firstName - Flywheel user first name
+   * @param {String} $0.email - Flywheel user email
+   * @param {String} $0.password - Flywheel user password
+   * @param {String} $0.telephone - Flywheel user phone number
+   * @param {Number} [$0.latitude=0] - Default latitude (in degrees) used when ordering cabs
+   * @param {Number} [$0.longitude=0] - Default longitude (in degrees) used when ordering cabs
+   * @return {Object} signup - An object containing:
+   * @return {String} signup.auth_token - The token that can be used for future requests
+   * @return {Object} signup.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
   */
   signup({firstName, email, password, telephone, latitude=0, longitude=0} = {}) {
     _verifyRequiredParams({firstName, email, password, telephone});
@@ -42,9 +62,14 @@ const flywheel = {
   },
 
   /**
-   * @param {String} [by] The field to search by
-   * @param {String} [filter] A filter to be applied to the search request
-   * @returns {Object} An object
+   * @param {Object} $0 - Options object parameter
+   * @param {String} [$0.by='location'] The field to search by
+   * @param {String} [$0.filter='hailable'] A filter to be applied to the search request
+   * @param {Number} [$0.latitude=0] - Default latitude (in degrees) used when ordering cabs
+   * @param {Number} [$0.longitude=0] - Default longitude (in degrees) used when ordering cabs
+   * @param {Number} [$0.authToken='(null)'] - User authentication token (if she's logged)
+   * @return {Object} search - An object containing:
+   * @return {Array} search.drivers - Array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.
   */
   search({by='location', filter='hailable', latitude=0, longitude=0, authToken='(null)'}) {
     return ax.get('/search', {
