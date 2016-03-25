@@ -10,7 +10,7 @@
     "watch": "gulp watch",
     "build": "gulp build",
     "coverage": "gulp coverage",
-    "docs": "documentation readme src/flywheel.js -s 'Documentation' --github"
+    "docs": "documentation build src/flywheel.js -f md --output docs/API.md --github"
   },
   "repository": {
     "type": "git",

@@ -74,7 +74,7 @@ const flywheel = {
    * @return {Object} search - An object containing:
    * @return {Array} search.drivers - Array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.
   */
-  search({by='location', filter='hailable', latitude=0, longitude=0, authToken='(null)'}) {
+  search({by='location', filter='hailable', latitude=0, longitude=0, authToken='(null)'} = {}) {
     return ax.get('/search', {
       params: {
         by: by,

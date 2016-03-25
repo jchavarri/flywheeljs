@@ -6,7 +6,6 @@ A Javascript wrapper to the [Flywheel](http://flywheel.com/) REST API, for both 
 [![Code Climate](https://codeclimate.com/github/jchavarri/flywheeljs/badges/gpa.svg)](https://codeclimate.com/github/jchavarri/flywheeljs)
 [![Coverage Status](https://coveralls.io/repos/github/jchavarri/flywheeljs/badge.svg?branch=master)](https://coveralls.io/github/jchavarri/flywheeljs?branch=master)
 [![Dependency Status](https://david-dm.org/jchavarri/flywheeljs.svg)](https://david-dm.org/jchavarri/flywheeljs)
-[![devDependency Status](https://david-dm.org/jchavarri/flywheeljs/dev-status.svg)](https://david-dm.org/jchavarri/flywheeljs#info=devDependencies)
 
 **DISCLAIMER** This project is an independent work and has not been authorized, sponsored, or otherwise approved by Flywheel Software Inc.
 
@@ -14,78 +13,78 @@ A Javascript wrapper to the [Flywheel](http://flywheel.com/) REST API, for both 
 
 The library is in a very early stage of development and is not suitable for usage yet.
 
-[](<## Install>)
-
-[](<- NodeJS / Browserify: `npm install flywheeljs --save`>)
-
-[](<- 1998 script tag: [TODO]>)
-
 ## Promises
 
 flywheeljs depends on a native ES6 Promise implementation to be [supported](http://caniuse.com/promises).
 If your environment doesn't support ES6 Promises, you can [polyfill](https://github.com/jakearchibald/es6-promise).
 
-## Documentation
+## Install
 
-### search
+- NodeJS / Browserify: `npm install flywheeljs --save`
 
-[src/flywheel.js:77-87](https://github.com/jchavarri/flywheeljs/blob/c46454c6f5e0cbcc907b51bec3f14f269d7d79b9/src/flywheel.js#L77-L87 "Source code on GitHub")
+Other platforms / bundling tools could be easily added if needed.
 
-Search cabs
 
-**Parameters**
+## Getting started
 
--   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options object parameter
-    -   `$0.by` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)=** The field to search by (optional, default `'location'`)
-    -   `$0.filter` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)=** A filter to be applied to the search request (optional, default `'hailable'`)
-    -   `$0.latitude` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)=** Default latitude (in degrees) used when ordering cabs (optional, default `0`)
-    -   `$0.longitude` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)=** Default longitude (in degrees) used when ordering cabs (optional, default `0`)
-    -   `$0.authToken` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)=** User authentication token (if she's logged) (optional, default `'(null)'`)
-
-Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** search - An object containing:
-
-Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** search.drivers - Array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.
-
-### signup
-
-[src/flywheel.js:50-63](https://github.com/jchavarri/flywheeljs/blob/c46454c6f5e0cbcc907b51bec3f14f269d7d79b9/src/flywheel.js#L50-L63 "Source code on GitHub")
-
-Register a new user on the Flywheel service
-
-**Parameters**
-
--   `$0` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)=(default {})** Options object parameter
-    -   `$0.firstName` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** Flywheel user first name
-    -   `$0.email` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** Flywheel user email
-    -   `$0.password` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** Flywheel user password
-    -   `$0.telephone` **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** Flywheel user phone number
-    -   `$0.latitude` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)=** Default latitude (in degrees) used when ordering cabs (optional, default `0`)
-    -   `$0.longitude` **[Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)=** Default longitude (in degrees) used when ordering cabs (optional, default `0`)
-
-**Examples**
+To login a user and then order a cab:
 
 ```javascript
-flywheel.signup({
-  firstName: 'John',
-  email: 'john@doe.com',
-  password: 'johndoe123',
-  telephone: 'johndoe123',
-  latitude: 37.7,
-  longitude: -122.4
+
+flywheel = require ('flywheeljs');
+
+var userEmail = 'user@email.com';
+var userPassword = 'userpassword';
+var latitude = 37.615223; // Pickup latitude
+var longitude = -122.389977; // Pickup longitude
+var tip = 10 * 100; // 10$ tip
+// These variables are needed to order the cab
+var authToken = '';
+var userName = '';
+var userPhone = '';
+var paymentToken = '';
+
+flywheel.login({
+  email: userEmail,
+  password: userPassword
 })
-.then(response => {
-  console.log(response.data.passenger);
+.then(function (response) {
+  authToken = response.data.auth_token;
+  userName = response.data.passenger.first_name;
+  userPhone = response.data.passenger.telephone;
+  paymentToken = response.data.passenger.payment_instruments[0].token;
+  return flywheel.applicationContext({
+    authToken: authToken,
+    latitude: latitude,
+    longitude: longitude
+  });
 })
-.catch(response => {
-  console.log(response.data.error);
+.then(function (response) {
+  return flywheel.createRide({
+    pickUpLat: latitude,
+    pickUpLon: longitude,
+    passenger: {
+      name: userName,
+      phone: userPhone
+    },
+    paymentToken: paymentToken,
+    serviceAvailabilitiesId: response.data.service_availabilities[0].id,
+    tip: tip,
+    authToken: authToken
+  });
+})
+.then(function (response) {
+  console.log("Your cab has been ordered! Your order id is: ", response.data.id);
+})
+.catch(function (error) {
+  console.err('There was an error', error);
 });
+
 ```
 
-Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** signup - An object containing:
+## Documentation
 
-Returns **[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** signup.auth_token - The token that can be used for future requests
-
-Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** signup.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
+You will find all the documentation [here](docs/API).
 
 ## Contributing
 
