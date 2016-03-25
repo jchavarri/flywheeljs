@@ -16,7 +16,8 @@ const _verifyRequiredParams = function(params) {
   }
 };
 
-const _authorizedGetRequest = function(path, authToken) {
+const _authorizedGetRequest = function(requiredParams, path, authToken) {
+  _verifyRequiredParams(requiredParams);
   return ax.get(path, {
     params: {
       auth_token: authToken
@@ -117,8 +118,7 @@ const flywheel = {
   },
 
   userInfo({userId, authToken}) {
-    _verifyRequiredParams({userId, authToken});
-    return _authorizedGetRequest('/passengers/' + userId, authToken);
+    return _authorizedGetRequest({userId, authToken}, '/passengers/' + userId, authToken);
   },
 
   eta({origin, destination, authToken}) {
@@ -157,8 +157,7 @@ const flywheel = {
   },
 
   getRideStatus({rideId, authToken}) {
-    _verifyRequiredParams({rideId, authToken});
-    return _authorizedGetRequest('/rides/' + rideId, authToken);
+    return _authorizedGetRequest({rideId, authToken}, '/rides/' + rideId, authToken);
   },
 
   cancelRide({rideId, authToken}) {
