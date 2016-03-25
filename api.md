@@ -126,7 +126,7 @@ Get user info
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options object parameter |
-| options.userId | <code>String</code> | The user id. It can be obtained from the 'passenger' object after logging in |
+| options.userId | <code>String</code> | The user id (you can obtain it from the 'passenger' object after logging in) |
 | options.authToken | <code>String</code> | The authentication token |
 
 <a name="flywheel.eta"></a>
@@ -140,7 +140,7 @@ Get estimated time of arrival
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options object parameter |
-| options.origin | <code>String</code> | The user id. It can be obtained from the 'passenger' object after logging in) |
+| options.origin | <code>String</code> | The user id (you can obtain it from the 'passenger' object after logging in) |
 | options.authToken | <code>String</code> | The authentication token |
 
 <a name="flywheel.createRide"></a>

@@ -25,6 +25,24 @@ const _authorizedGetRequest = function(requiredParams, path, authToken) {
   });
 };
 
+/**
+The flywheel library public Object
+@namespace flywheel
+*/
+/**
+ * A type definition.
+ * @name MyType1
+ * @typedef {Object} MyType1
+ * @property {number} prop1 - one property
+ * @property {string} prop2 - another property
+ */
+/**
+ * A type definition.
+ * @name MyType2
+ * @typedef {Object} MyType2
+ * @property {number} prop1 - one property
+ * @property {string} prop2 - another property
+ */
 const flywheel = {
 
   /**
@@ -45,13 +63,13 @@ const flywheel = {
    * .catch(response => {
    *   console.log(response.data.error);
    * });
-   * @param {Object} $0 - Options object parameter
-   * @param {String} $0.firstName - Flywheel user first name
-   * @param {String} $0.email - Flywheel user email
-   * @param {String} $0.password - Flywheel user password
-   * @param {String} $0.telephone - Flywheel user phone number
-   * @param {Number} [$0.latitude=0] - Default latitude (in degrees). This value can be overriden when ordering a cab
-   * @param {Number} [$0.longitude=0] - Default longitude (in degrees). This value can be overriden when ordering a cab
+   * @param {Object} options - Options object parameter
+   * @param {String} options.firstName - Flywheel user first name
+   * @param {String} options.email - Flywheel user email
+   * @param {String} options.password - Flywheel user password
+   * @param {String} options.telephone - Flywheel user phone number
+   * @param {Number} [options.latitude=0] - Default latitude (in degrees). This value can be overriden when ordering a cab
+   * @param {Number} [options.longitude=0] - Default longitude (in degrees). This value can be overriden when ordering a cab
    * @return {Object} signup - An object containing:
    * @return {String} signup.auth_token - The token that can be used for future requests
    * @return {Object} signup.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
@@ -74,12 +92,12 @@ const flywheel = {
   /**
    * Search cabs
    *
-   * @param {Object} $0 - Options object parameter
-   * @param {String} [$0.by='location'] - The field to search by
-   * @param {String} [$0.filter='hailable'] - A filter to be applied to the search request
-   * @param {Number} [$0.latitude=0] - Default latitude (in degrees) used when ordering cabs
-   * @param {Number} [$0.longitude=0] - Default longitude (in degrees) used when ordering cabs
-   * @param {Number} [$0.authToken='(null)'] - User authentication token (if she's logged)
+   * @param {Object} options - Options object parameter
+   * @param {String} [options.by='location'] - The field to search by
+   * @param {String} [options.filter='hailable'] - A filter to be applied to the search request
+   * @param {Number} [options.latitude=0] - Default latitude (in degrees) used when ordering cabs
+   * @param {Number} [options.longitude=0] - Default longitude (in degrees) used when ordering cabs
+   * @param {Number} [options.authToken='(null)'] - User authentication token (if she's logged)
    * @return {Object} search - An object containing:
    * @return {Array} search.drivers - Array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.
   */
@@ -98,9 +116,9 @@ const flywheel = {
   /**
    * Login a user
    *
-   * @param {Object} $0 - Options object parameter
-   * @param {String} $0.email - The user email
-   * @param {String} $0.password - The user password
+   * @param {Object} options - Options object parameter
+   * @param {String} options.email - The user email
+   * @param {String} options.password - The user password
    * @return {Object} login - An object containing:
    * @return {String} login.auth_token - The authentication token that can be used in subsequent requests
    * @return {Object} login.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
@@ -117,10 +135,10 @@ const flywheel = {
   /**
    * Get application context given a specific location.
    *
-   * @param {Object} $0 - Options object parameter
-   * @param {String} $0.authToken - An authentication token
-   * @param {Number} $0.latitude - A given latitude (in degrees) used when ordering cabs
-   * @param {Number} $0.longitude - A given longitude (in degrees) used when ordering cabs
+   * @param {Object} options - Options object parameter
+   * @param {String} options.authToken - An authentication token
+   * @param {Number} options.latitude - A given latitude (in degrees) used when ordering cabs
+   * @param {Number} options.longitude - A given longitude (in degrees) used when ordering cabs
    * @return {Object} applicationContext - An object containing the application context. The most interesting fields returned are:
    * @return {Array} applicationContext.service_availabilities - An array of the services available at the given location. The service 'id' parameter is required for other requests (createRide, for example)
    * @return {Object} applicationContext.on_board_cancellation_window - The amount of time (in secs) allowed to cancel a ride without being charged
@@ -142,9 +160,9 @@ const flywheel = {
   /**
    * Get user info
    *
-   * @param {Object} $0 - Options object parameter
-   * @param {String} $0.userId - The user id (you can obtain it from the 'passenger' object after logging in)
-   * @param {String} $0.authToken - The authentication token
+   * @param {Object} options - Options object parameter
+   * @param {String} options.userId - The user id. It can be obtained from the 'passenger' object after logging in
+   * @param {String} options.authToken - The authentication token
    * @return {Object} userInfo - An object containing the user information. The most interesting fields returned are:
    * @return {String} userInfo.id - The user (passenger) id
    * @return {Array} userInfo.payment_instruments - An array with the payment instruments allowed by the user. The most useful field of each payment instrument is 'token'
@@ -156,9 +174,9 @@ const flywheel = {
   /**
    * Get estimated time of arrival
    *
-   * @param {Object} $0 - Options object parameter
-   * @param {String} $0.origin - The user id (you can obtain it from the 'passenger' object after logging in)
-   * @param {String} $0.authToken - The authentication token
+   * @param {Object} options - Options object parameter
+   * @param {String} options.origin - The user id. It can be obtained from the 'passenger' object after logging in)
+   * @param {String} options.authToken - The authentication token
    * @return {Object} eta - An object containing the eta information. The fields returned are:
    * @return {String} eta.status - "OK" if the location can be reached
    * @return {Array} eta.response - An array that contains at least one object with the estimated durations. It has the following properties: 'duration' (in secs), 'duration_in_traffic' (in secs) and 'distance'
@@ -177,14 +195,14 @@ const flywheel = {
   /**
    * Create a new request for a ride
    *
-   * @param {Object} $0 - Options object parameter
-   * @param {Number} $0.pickUpLat - Pickup latitude (in degrees)
-   * @param {Number} $0.pickUpLon - Pickup latitude (in degrees)
-   * @param {Object} $0.passenger - The passenger object. Only 'name' (String) and 'telephone' (String) are required
-   * @param {String} $0.serviceAvailabilitiesId - The service id. It can be obtained using `applicationContext()`
-   * @param {Number} $0.tip - The ride tip (in cents)
-   * @param {String} $0.authToken - The authentication token
-   * @param {String} $0.notes - Any notes to be sent to the cab driver
+   * @param {Object} options - Options object parameter
+   * @param {Number} options.pickUpLat - Pickup latitude (in degrees)
+   * @param {Number} options.pickUpLon - Pickup latitude (in degrees)
+   * @param {Object} options.passenger - The passenger object. Only 'name' (String) and 'telephone' (String) are required
+   * @param {String} options.serviceAvailabilitiesId - The service id. It can be obtained using `applicationContext()`
+   * @param {Number} options.tip - The ride tip (in cents)
+   * @param {String} options.authToken - The authentication token
+   * @param {String} options.notes - Any notes to be sent to the cab driver
    * @return {MyType} ride - An object containing the eta information. The fields returned are:
   */
   createRide({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId, tip=500, authToken='(null)', notes=''}) {
@@ -211,6 +229,12 @@ const flywheel = {
     });
   },
 
+  /**
+    a quite wonderful function
+    @param {object} - privacy gown
+    @param {object} - security
+    @returns {Promise} A promise that returns {@link MyType1} if resolved and an Object if rejected.
+  */
   getRideStatus({rideId, authToken}) {
     return _authorizedGetRequest({rideId, authToken}, '/rides/' + rideId, authToken);
   },
