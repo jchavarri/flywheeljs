@@ -2,57 +2,57 @@
 
 <dl>
 <dt><a href="#flywheel">flywheel</a> : <code>object</code></dt>
-<dd><p>The flywheel library public Object</p>
+<dd><p>The flywheeljs library main exported object</p>
 </dd>
 </dl>
 
 ## Typedefs
 
 <dl>
-<dt><a href="#MyType1">MyType1</a> : <code>Object</code></dt>
+<dt><a href="#MyType2">MyType2</a> : <code>object</code></dt>
 <dd><p>A type definition.</p>
 </dd>
-<dt><a href="#MyType2">MyType2</a> : <code>Object</code></dt>
-<dd><p>A type definition.</p>
+<dt><a href="#SignupPromise">SignupPromise</a> : <code>object</code></dt>
+<dd><p>The type of the object returned with a successfuly resolved signup promise.</p>
 </dd>
 </dl>
 
 <a name="flywheel"></a>
 
 ## flywheel : <code>object</code>
-The flywheel library public Object
+The flywheeljs library main exported object
 
-**Kind**: global namespace
+**Kind**: global namespace  
 
 * [flywheel](#flywheel) : <code>object</code>
-    * [.signup(options)](#flywheel.signup) ⇒ <code>Object</code> &#124; <code>String</code> &#124; <code>Object</code>
-    * [.search(options)](#flywheel.search) ⇒ <code>Object</code> &#124; <code>Array</code>
-    * [.login(options)](#flywheel.login) ⇒ <code>Object</code> &#124; <code>String</code> &#124; <code>Object</code> &#124; <code>Array</code>
-    * [.applicationContext(options)](#flywheel.applicationContext) ⇒ <code>Object</code> &#124; <code>Array</code> &#124; <code>Object</code>
-    * [.userInfo(options)](#flywheel.userInfo) ⇒ <code>Object</code> &#124; <code>String</code> &#124; <code>Array</code>
-    * [.eta(options)](#flywheel.eta) ⇒ <code>Object</code> &#124; <code>String</code> &#124; <code>Array</code>
+    * [.signup(options)](#flywheel.signup) ⇒ <code>Promise</code>
+    * [.search(options)](#flywheel.search) ⇒ <code>object</code> &#124; <code>array</code>
+    * [.login(options)](#flywheel.login) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>object</code> &#124; <code>array</code>
+    * [.applicationContext(options)](#flywheel.applicationContext) ⇒ <code>object</code> &#124; <code>array</code> &#124; <code>object</code>
+    * [.userInfo(options)](#flywheel.userInfo) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>array</code>
+    * [.eta(options)](#flywheel.eta) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>array</code>
     * [.createRide(options)](#flywheel.createRide) ⇒ <code>MyType</code>
     * [.getRideStatus()](#flywheel.getRideStatus) ⇒ <code>Promise</code>
 
 <a name="flywheel.signup"></a>
 
-### flywheel.signup(options) ⇒ <code>Object</code> &#124; <code>String</code> &#124; <code>Object</code>
-Register a new user on the Flywheel service
+### flywheel.signup(options) ⇒ <code>Promise</code>
+Sign up a new user for the Flywheel service
 
-**Kind**: static method of <code>[flywheel](#flywheel)</code>
-**Returns**: <code>Object</code> - signup - An object containing:<code>String</code> - signup.auth_token - The token that can be used for future requests<code>Object</code> - signup.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>Promise</code> - A promise that returns [SignupPromise](#SignupPromise) if resolved and an object containing the error if rejected.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| options | <code>Object</code> |  | Options object parameter |
-| options.firstName | <code>String</code> |  | Flywheel user first name |
-| options.email | <code>String</code> |  | Flywheel user email |
-| options.password | <code>String</code> |  | Flywheel user password |
-| options.telephone | <code>String</code> |  | Flywheel user phone number |
-| [options.latitude] | <code>Number</code> | <code>0</code> | Default latitude (in degrees). This value can be overriden when ordering a cab |
-| [options.longitude] | <code>Number</code> | <code>0</code> | Default longitude (in degrees). This value can be overriden when ordering a cab |
+| options | <code>object</code> |  | Options object parameter |
+| options.firstName | <code>string</code> |  | Flywheel user first name |
+| options.email | <code>string</code> |  | Flywheel user email |
+| options.password | <code>string</code> |  | Flywheel user password |
+| options.telephone | <code>string</code> |  | Flywheel user phone number |
+| [options.latitude] | <code>number</code> | <code>0</code> | Default latitude (in degrees). This value can be overriden when ordering a cab |
+| [options.longitude] | <code>number</code> | <code>0</code> | Default longitude (in degrees). This value can be overriden when ordering a cab |
 
-**Example**
+**Example**  
 ```js
 flywheel.signup({
   firstName: 'John',
@@ -71,133 +71,133 @@ flywheel.signup({
 ```
 <a name="flywheel.search"></a>
 
-### flywheel.search(options) ⇒ <code>Object</code> &#124; <code>Array</code>
+### flywheel.search(options) ⇒ <code>object</code> &#124; <code>array</code>
 Search cabs
 
-**Kind**: static method of <code>[flywheel](#flywheel)</code>
-**Returns**: <code>Object</code> - search - An object containing:<code>Array</code> - search.drivers - Array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>object</code> - search - An object containing:<code>array</code> - search.drivers - array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| options | <code>Object</code> |  | Options object parameter |
-| [options.by] | <code>String</code> | <code>&#x27;location&#x27;</code> | The field to search by |
-| [options.filter] | <code>String</code> | <code>&#x27;hailable&#x27;</code> | A filter to be applied to the search request |
-| [options.latitude] | <code>Number</code> | <code>0</code> | Default latitude (in degrees) used when ordering cabs |
-| [options.longitude] | <code>Number</code> | <code>0</code> | Default longitude (in degrees) used when ordering cabs |
-| [options.authToken] | <code>Number</code> | <code>&#x27;(null)&#x27;</code> | User authentication token (if she's logged) |
+| options | <code>object</code> |  | Options object parameter |
+| [options.by] | <code>string</code> | <code>&quot;&#x27;location&#x27;&quot;</code> | The field to search by |
+| [options.filter] | <code>string</code> | <code>&quot;&#x27;hailable&#x27;&quot;</code> | A filter to be applied to the search request |
+| [options.latitude] | <code>number</code> | <code>0</code> | Default latitude (in degrees) used when ordering cabs |
+| [options.longitude] | <code>number</code> | <code>0</code> | Default longitude (in degrees) used when ordering cabs |
+| [options.authToken] | <code>number</code> | <code>&#x27;(null)&#x27;</code> | User authentication token (if she's logged) |
 
 <a name="flywheel.login"></a>
 
-### flywheel.login(options) ⇒ <code>Object</code> &#124; <code>String</code> &#124; <code>Object</code> &#124; <code>Array</code>
+### flywheel.login(options) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>object</code> &#124; <code>array</code>
 Login a user
 
-**Kind**: static method of <code>[flywheel](#flywheel)</code>
-**Returns**: <code>Object</code> - login - An object containing:<code>String</code> - login.auth_token - The authentication token that can be used in subsequent requests<code>Object</code> - login.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.<code>Array</code> - login.scheduled_rides - Array containing the user scheduled rides
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>object</code> - login - An object containing:<code>string</code> - login.auth_token - The authentication token that can be used in subsequent requests<code>object</code> - login.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.<code>array</code> - login.scheduled_rides - array containing the user scheduled rides  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | Options object parameter |
-| options.email | <code>String</code> | The user email |
-| options.password | <code>String</code> | The user password |
+| options | <code>object</code> | Options object parameter |
+| options.email | <code>string</code> | The user email |
+| options.password | <code>string</code> | The user password |
 
 <a name="flywheel.applicationContext"></a>
 
-### flywheel.applicationContext(options) ⇒ <code>Object</code> &#124; <code>Array</code> &#124; <code>Object</code>
+### flywheel.applicationContext(options) ⇒ <code>object</code> &#124; <code>array</code> &#124; <code>object</code>
 Get application context given a specific location.
 
-**Kind**: static method of <code>[flywheel](#flywheel)</code>
-**Returns**: <code>Object</code> - applicationContext - An object containing the application context. The most interesting fields returned are:<code>Array</code> - applicationContext.service_availabilities - An array of the services available at the given location. The service 'id' parameter is required for other requests (createRide, for example)<code>Object</code> - applicationContext.on_board_cancellation_window - The amount of time (in secs) allowed to cancel a ride without being charged
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>object</code> - applicationContext - An object containing the application context. The most interesting fields returned are:<code>array</code> - applicationContext.service_availabilities - An array of the services available at the given location. The service 'id' parameter is required for other requests (createRide, for example)<code>object</code> - applicationContext.on_board_cancellation_window - The amount of time (in secs) allowed to cancel a ride without being charged  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | Options object parameter |
-| options.authToken | <code>String</code> | An authentication token |
-| options.latitude | <code>Number</code> | A given latitude (in degrees) used when ordering cabs |
-| options.longitude | <code>Number</code> | A given longitude (in degrees) used when ordering cabs |
+| options | <code>object</code> | Options object parameter |
+| options.authToken | <code>string</code> | An authentication token |
+| options.latitude | <code>number</code> | A given latitude (in degrees) used when ordering cabs |
+| options.longitude | <code>number</code> | A given longitude (in degrees) used when ordering cabs |
 
 <a name="flywheel.userInfo"></a>
 
-### flywheel.userInfo(options) ⇒ <code>Object</code> &#124; <code>String</code> &#124; <code>Array</code>
+### flywheel.userInfo(options) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>array</code>
 Get user info
 
-**Kind**: static method of <code>[flywheel](#flywheel)</code>
-**Returns**: <code>Object</code> - userInfo - An object containing the user information. The most interesting fields returned are:<code>String</code> - userInfo.id - The user (passenger) id<code>Array</code> - userInfo.payment_instruments - An array with the payment instruments allowed by the user. The most useful field of each payment instrument is 'token'
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>object</code> - userInfo - An object containing the user information. The most interesting fields returned are:<code>string</code> - userInfo.id - The user (passenger) id<code>array</code> - userInfo.payment_instruments - An array with the payment instruments allowed by the user. The most useful field of each payment instrument is 'token'  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | Options object parameter |
-| options.userId | <code>String</code> | The user id. It can be obtained from the 'passenger' object after logging in |
-| options.authToken | <code>String</code> | The authentication token |
+| options | <code>object</code> | Options object parameter |
+| options.userId | <code>string</code> | The user id. It can be obtained from the 'passenger' object after logging in |
+| options.authToken | <code>string</code> | The authentication token |
 
 <a name="flywheel.eta"></a>
 
-### flywheel.eta(options) ⇒ <code>Object</code> &#124; <code>String</code> &#124; <code>Array</code>
+### flywheel.eta(options) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>array</code>
 Get estimated time of arrival
 
-**Kind**: static method of <code>[flywheel](#flywheel)</code>
-**Returns**: <code>Object</code> - eta - An object containing the eta information. The fields returned are:<code>String</code> - eta.status - "OK" if the location can be reached<code>Array</code> - eta.response - An array that contains at least one object with the estimated durations. It has the following properties: 'duration' (in secs), 'duration_in_traffic' (in secs) and 'distance'
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>object</code> - eta - An object containing the eta information. The fields returned are:<code>string</code> - eta.status - "OK" if the location can be reached<code>array</code> - eta.response - An array that contains at least one object with the estimated durations. It has the following properties: 'duration' (in secs), 'duration_in_traffic' (in secs) and 'distance'  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | Options object parameter |
-| options.origin | <code>String</code> | The user id. It can be obtained from the 'passenger' object after logging in) |
-| options.authToken | <code>String</code> | The authentication token |
+| options | <code>object</code> | Options object parameter |
+| options.origin | <code>string</code> | The user id. It can be obtained from the 'passenger' object after logging in) |
+| options.authToken | <code>string</code> | The authentication token |
 
 <a name="flywheel.createRide"></a>
 
 ### flywheel.createRide(options) ⇒ <code>MyType</code>
 Create a new request for a ride
 
-**Kind**: static method of <code>[flywheel](#flywheel)</code>
-**Returns**: <code>MyType</code> - ride - An object containing the eta information. The fields returned are:
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>MyType</code> - ride - An object containing the eta information. The fields returned are:  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | Options object parameter |
-| options.pickUpLat | <code>Number</code> | Pickup latitude (in degrees) |
-| options.pickUpLon | <code>Number</code> | Pickup latitude (in degrees) |
-| options.passenger | <code>Object</code> | The passenger object. Only 'name' (String) and 'telephone' (String) are required |
-| options.serviceAvailabilitiesId | <code>String</code> | The service id. It can be obtained using `applicationContext()` |
-| options.tip | <code>Number</code> | The ride tip (in cents) |
-| options.authToken | <code>String</code> | The authentication token |
-| options.notes | <code>String</code> | Any notes to be sent to the cab driver |
+| options | <code>object</code> | Options object parameter |
+| options.pickUpLat | <code>number</code> | Pickup latitude (in degrees) |
+| options.pickUpLon | <code>number</code> | Pickup latitude (in degrees) |
+| options.passenger | <code>object</code> | The passenger object. Only 'name' (string) and 'telephone' (string) are required |
+| options.serviceAvailabilitiesId | <code>string</code> | The service id. It can be obtained using `applicationContext()` |
+| options.tip | <code>number</code> | The ride tip (in cents) |
+| options.authToken | <code>string</code> | The authentication token |
+| options.notes | <code>string</code> | Any notes to be sent to the cab driver |
 
 <a name="flywheel.getRideStatus"></a>
 
 ### flywheel.getRideStatus() ⇒ <code>Promise</code>
 a quite wonderful function
 
-**Kind**: static method of <code>[flywheel](#flywheel)</code>
-**Returns**: <code>Promise</code> - A promise that returns [MyType1](#MyType1) if resolved and an Object if rejected.
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>Promise</code> - A promise that returns [MyType1](MyType1) if resolved and an object if rejected.  
 
 | Type | Description |
 | --- | --- |
 | <code>object</code> | privacy gown |
 | <code>object</code> | security |
 
-<a name="MyType1"></a>
-
-## MyType1 : <code>Object</code>
-A type definition.
-
-**Kind**: global typedef
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| prop1 | <code>number</code> | one property |
-| prop2 | <code>string</code> | another property |
-
 <a name="MyType2"></a>
 
-## MyType2 : <code>Object</code>
+## MyType2 : <code>object</code>
 A type definition.
 
-**Kind**: global typedef
+**Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
 | prop1 | <code>number</code> | one property |
 | prop2 | <code>string</code> | another property |
+
+<a name="SignupPromise"></a>
+
+## SignupPromise : <code>object</code>
+The type of the object returned with a successfuly resolved signup promise.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| auth_token | <code>string</code> | The token that can be used for future requests |
+| passenger | <code>object</code> | An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`. |
 

@@ -1,4 +1,4 @@
-# flywheeljs
+# 🚕 flywheeljs
 
 A Javascript wrapper to the [Flywheel](http://flywheel.com/) REST API, for both NodeJS and the browser.
 
@@ -49,10 +49,10 @@ flywheel.login({
   password: userPassword
 })
 .then(function (response) {
-  authToken = response.data.auth_token;
-  userName = response.data.passenger.first_name;
-  userPhone = response.data.passenger.telephone;
-  paymentToken = response.data.passenger.payment_instruments[0].token;
+  authToken = response.auth_token;
+  userName = response.passenger.first_name;
+  userPhone = response.passenger.telephone;
+  paymentToken = response.passenger.payment_instruments[0].token;
   return flywheel.applicationContext({
     authToken: authToken,
     latitude: latitude,
@@ -68,13 +68,13 @@ flywheel.login({
       phone: userPhone
     },
     paymentToken: paymentToken,
-    serviceAvailabilitiesId: response.data.service_availabilities[0].id,
+    serviceAvailabilitiesId: response.service_availabilities[0].id,
     tip: tip,
     authToken: authToken
   });
 })
 .then(function (response) {
-  console.log("Your cab has been ordered! Your order id is: ", response.data.id);
+  console.log("Your cab has been ordered! Your order id is: ", response.id);
 })
 .catch(function (error) {
   console.err('There was an error', error);

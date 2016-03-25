@@ -4,6 +4,13 @@ const ax = axios.create({
   baseURL: 'https://mobile.flywheel.com',
 });
 
+// We pass the data to the promises objects, not the status, headers and config
+ax.interceptors.response.use(function(response) {
+  return response.data;
+}, function(error) {
+  return Promise.reject(error.data);
+});
+
 const _verifyRequiredParams = function(params) {
   const missingParams = [];
   Object.keys(params).forEach(function(key) {
@@ -26,27 +33,27 @@ const _authorizedGetRequest = function(requiredParams, path, authToken) {
 };
 
 /**
-The flywheel library public Object
-@namespace flywheel
+The flywheeljs library main exported object
+@namespace {object} flywheel
 */
 /**
  * A type definition.
- * @name MyType1
- * @typedef {Object} MyType1
- * @property {number} prop1 - one property
- * @property {string} prop2 - another property
- */
-/**
- * A type definition.
  * @name MyType2
- * @typedef {Object} MyType2
+ * @typedef {object} MyType2
  * @property {number} prop1 - one property
  * @property {string} prop2 - another property
  */
 const flywheel = {
 
   /**
-   * Register a new user on the Flywheel service
+   * The type of the object returned with a successfully resolved signup promise.
+   * @name SignupPromise
+   * @typedef {object} SignupPromise
+   * @property {string} auth_token - The token that can be used to authenticate future requests
+   * @property {object} passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
+   */
+  /**
+   * Sign up a new user for the Flywheel service
    *
    * @example
    * flywheel.signup({
@@ -63,16 +70,14 @@ const flywheel = {
    * .catch(response => {
    *   console.log(response.data.error);
    * });
-   * @param {Object} options - Options object parameter
-   * @param {String} options.firstName - Flywheel user first name
-   * @param {String} options.email - Flywheel user email
-   * @param {String} options.password - Flywheel user password
-   * @param {String} options.telephone - Flywheel user phone number
-   * @param {Number} [options.latitude=0] - Default latitude (in degrees). This value can be overriden when ordering a cab
-   * @param {Number} [options.longitude=0] - Default longitude (in degrees). This value can be overriden when ordering a cab
-   * @return {Object} signup - An object containing:
-   * @return {String} signup.auth_token - The token that can be used for future requests
-   * @return {Object} signup.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
+   * @param {object} options - Options object parameter
+   * @param {string} options.firstName - Flywheel user first name
+   * @param {string} options.email - Flywheel user email
+   * @param {string} options.password - Flywheel user password
+   * @param {string} options.telephone - Flywheel user phone number
+   * @param {number} [options.latitude=0] - Default latitude (in degrees). This value can be overriden when ordering a cab
+   * @param {number} [options.longitude=0] - Default longitude (in degrees). This value can be overriden when ordering a cab
+   * @return {Promise} A promise that returns {@link SignupPromise} if resolved and an object containing the error if rejected.
   */
   signup({firstName, email, password, telephone, latitude=0, longitude=0} = {}) {
     _verifyRequiredParams({firstName, email, password, telephone});
@@ -90,16 +95,21 @@ const flywheel = {
   },
 
   /**
-   * Search cabs
+   * The type of the object returned with a successfully resolved search promise.
+   * @name SearchPromise
+   * @typedef {object} SearchPromise
+   * @property {array} drivers - An array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.
+   */
+  /**
+   * Search for cabs around a given position
    *
-   * @param {Object} options - Options object parameter
-   * @param {String} [options.by='location'] - The field to search by
-   * @param {String} [options.filter='hailable'] - A filter to be applied to the search request
-   * @param {Number} [options.latitude=0] - Default latitude (in degrees) used when ordering cabs
-   * @param {Number} [options.longitude=0] - Default longitude (in degrees) used when ordering cabs
-   * @param {Number} [options.authToken='(null)'] - User authentication token (if she's logged)
-   * @return {Object} search - An object containing:
-   * @return {Array} search.drivers - Array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.
+   * @param {object} options - Options object parameter
+   * @param {string} [options.by='location'] - The field to search by
+   * @param {string} [options.filter='hailable'] - A filter to be applied to the search request
+   * @param {number} [options.latitude=0] - Default latitude (in degrees) used when ordering cabs
+   * @param {number} [options.longitude=0] - Default longitude (in degrees) used when ordering cabs
+   * @param {number} [options.authToken='(null)'] - User authentication token (if she's logged)
+   * @return {Promise} A promise that returns {@link SearchPromise} if resolved and an object containing the error if rejected.
   */
   search({by='location', filter='hailable', latitude=0, longitude=0, authToken='(null)'} = {}) {
     return ax.get('/search', {
@@ -114,15 +124,20 @@ const flywheel = {
   },
 
   /**
+   * The type of the object returned with a successfully resolved search promise.
+   * @name LoginPromise
+   * @typedef {object} LoginPromise
+   * @property {string} auth_token - The token that can be used to authenticate future requests
+   * @property {object} passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
+   * @property {object} scheduled_rides - An array containing the user scheduled rides
+   */
+  /**
    * Login a user
    *
-   * @param {Object} options - Options object parameter
-   * @param {String} options.email - The user email
-   * @param {String} options.password - The user password
-   * @return {Object} login - An object containing:
-   * @return {String} login.auth_token - The authentication token that can be used in subsequent requests
-   * @return {Object} login.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.
-   * @return {Array} login.scheduled_rides - Array containing the user scheduled rides
+   * @param {object} options - Options object parameter
+   * @param {string} options.email - The user email
+   * @param {string} options.password - The user password
+   * @return {Promise} A promise that returns {@link LoginPromise} if resolved and an object containing the error if rejected.
   */
   login({email, password}) {
     _verifyRequiredParams({email, password});
@@ -133,15 +148,36 @@ const flywheel = {
   },
 
   /**
-   * Get application context given a specific location.
+   * The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.
+   * @name ApplicationContextPromise
+   * @typedef {object} ApplicationContextPromise
+   * @property {array} service_availabilities - An array of the services available at the given location. The service 'id' parameter is required for other requests (createRide, for example)
+   * @property {object} on_board_cancellation_window - The amount of time (in secs) allowed to cancel a ride without being charged
+   * @property {object} application_details - Some applications details, like the url on the app store
+   * @property {number} flywheel_service_fee - The fee charged by flywheel (in cents)
+   * @property {number} hailing_distance - Max hailing distance in meters (?)
+   * @property {number} maximum_hail_time - Max hail time in secs (before a request fails?)
+   * @property {number} straight_line_approximation_speed - ?
+   * @property {array} points_of_interest - ?
+   * @property {array} alerts - ?
+   * @property {number} on_board_cancellation_window - The amount of time (in secs) where a cancellation is not charged (?)
+   * @property {number} gps_warning_distance - ?
+   * @property {string} preferred_eta_provider - ?
+   * @property {number} booked_ride_countdown_window - ?
+   * @property {object} invite_friends - Referral rewards (in cents)
+   * @property {string} time_zone_identifier - Time zone
+   * @property {number} utc_offset - Offset (in secs) from UTC time
+   * @property {string} share_eta_msg - Some string used in the app UI
+   * @property {bool} enable_asking_point - ?
+  */
+  /**
+   * Get some application context data given a specific location.
    *
-   * @param {Object} options - Options object parameter
-   * @param {String} options.authToken - An authentication token
-   * @param {Number} options.latitude - A given latitude (in degrees) used when ordering cabs
-   * @param {Number} options.longitude - A given longitude (in degrees) used when ordering cabs
-   * @return {Object} applicationContext - An object containing the application context. The most interesting fields returned are:
-   * @return {Array} applicationContext.service_availabilities - An array of the services available at the given location. The service 'id' parameter is required for other requests (createRide, for example)
-   * @return {Object} applicationContext.on_board_cancellation_window - The amount of time (in secs) allowed to cancel a ride without being charged
+   * @param {object} options - Options object parameter
+   * @param {string} options.authToken - An authentication token
+   * @param {number} options.latitude - A given latitude (in degrees) used when ordering cabs
+   * @param {number} options.longitude - A given longitude (in degrees) used when ordering cabs
+   * @return {Promise} A promise that returns {@link ApplicationContextPromise} if resolved and an object containing the error if rejected.
   */
   applicationContext({authToken, latitude=0, longitude=0}) {
     return ax.get('/application_context', {
@@ -158,28 +194,67 @@ const flywheel = {
   },
 
   /**
+   * The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.
+   * @name UserInfoPromise
+   * @typedef {object} UserInfoPromise
+   * @property {string} id - The user (passenger) id
+   * @property {string} first_name - The user first name
+   * @property {string} last_name - The user last name
+   * @property {string} email - The user email
+   * @property {bool} has_dummy_email - True if the user has a dummy email (whatever that might mean)
+   * @property {string} telephone - The user telephone
+   * @property {string} canonical_telephone - ?
+   * @property {array} addresses - The user addresses
+   * @property {array} mobile_devices - The user mobile devices
+   * @property {array} dispatch_service_accounts - ?
+   * @property {number} default_tip_percent - Default tip percentage
+   * @property {number} credit_balance - ?
+   * @property {number} credits_since_last_session - ?
+   * @property {array} payment_instruments - The payment instruments linked to this user. The payment object contains a property `token` that is required for creating rides
+   * @property {number} payment_instruments_count - Number of payment instruments
+   * @property {string} latest_ride_id - Latest ride id
+   * @property {string} referral_code - Referral code for this user
+   * @property {string} latest_ride_id - Latest ride id
+   * @property {array} nonfatal_errors - ?
+   * @property {array} disabled_features - ?
+   * @property {string} oauth_id - ?
+   * @property {string} oauth_provider - I guess Google, FB, etc.
+   * @property {bool} sms_verification_required - ?
+   * @property {bool} is_agent_also - ?
+   * @property {string} added_by - ?
+   * @property {array} special_characteristics - ?
+   * @property {bool} ivr_blocked - ?
+   * @property {bool} newly_added - ?
+   * @property {object} suspended_upto - ?
+  */
+  /**
    * Get user info
    *
-   * @param {Object} options - Options object parameter
-   * @param {String} options.userId - The user id. It can be obtained from the 'passenger' object after logging in
-   * @param {String} options.authToken - The authentication token
-   * @return {Object} userInfo - An object containing the user information. The most interesting fields returned are:
-   * @return {String} userInfo.id - The user (passenger) id
-   * @return {Array} userInfo.payment_instruments - An array with the payment instruments allowed by the user. The most useful field of each payment instrument is 'token'
+   * @param {object} options - Options object parameter
+   * @param {string} options.userId - The user id. It can be obtained from the 'passenger' object after logging in
+   * @param {string} options.authToken - The authentication token
+   * @return {object} userInfo - An object containing the user information. The most interesting fields returned are:
+   * @return {string} userInfo.id - The user (passenger) id
+   * @return {Promise} A promise that returns {@link UserInfoPromise} if resolved and an object containing the error if rejected.
   */
   userInfo({userId, authToken}) {
     return _authorizedGetRequest({userId, authToken}, '/passengers/' + userId, authToken);
   },
 
   /**
+   * The type of the object returned with a successfully resolved search promise.
+   * @name ETAPromise
+   * @typedef {object} ETAPromise
+   * @property {string} status - "OK" if the location can be reached
+   * @property {array} response - An array that contains at least one object with the estimated durations. It has the following properties: 'duration' (in secs), 'duration_in_traffic' (in secs) and 'distance'
+   */
+  /**
    * Get estimated time of arrival
    *
-   * @param {Object} options - Options object parameter
-   * @param {String} options.origin - The user id. It can be obtained from the 'passenger' object after logging in)
-   * @param {String} options.authToken - The authentication token
-   * @return {Object} eta - An object containing the eta information. The fields returned are:
-   * @return {String} eta.status - "OK" if the location can be reached
-   * @return {Array} eta.response - An array that contains at least one object with the estimated durations. It has the following properties: 'duration' (in secs), 'duration_in_traffic' (in secs) and 'distance'
+   * @param {object} options - Options object parameter
+   * @param {string} options.origin - The user id. It can be obtained from the 'passenger' object after logging in)
+   * @param {string} options.authToken - The authentication token
+   * @return {Promise} A promise that returns {@link ETAPromise} if resolved and an object containing the error if rejected.
   */
   eta({origin, destination, authToken}) {
     _verifyRequiredParams({origin, destination, authToken});
@@ -193,17 +268,34 @@ const flywheel = {
   },
 
   /**
+   * The type of the object returned with a successfully resolved search promise. It includes a lot of properties, only the most interesting are documented here.
+   * @name RidePromise
+   * @typedef {object} RidePromise
+   * @property {string} id - The ride id
+   * @property {string} notes - The notes attached to the ride, created by the user
+   * @property {string} status - `hailing` if the ride is still to be assigned, `hail_accepted` if a cab accepted the ride
+   * @property {string} failure_reason - The reason why the ride failed, if any
+   * @property {string} client_created_at - Formatted creation date
+   * @property {number} created_at - Creation timestamp
+   * @property {number} updated_at - The reason why the ride failed
+   * @property {object} passenger - An object with the same structure than {@link UserInfoPromise}
+   * @property {object} pick_up_location - Pick up location
+   * @property {object} drop_off_location - Drop off location (can be empty)
+   * @property {object} hail - This object contains all details about the `hail`, including the driver information
+   * @property {object} payment_instrument - The payment instrument used to pay for this ride
+   */
+  /**
    * Create a new request for a ride
    *
-   * @param {Object} options - Options object parameter
-   * @param {Number} options.pickUpLat - Pickup latitude (in degrees)
-   * @param {Number} options.pickUpLon - Pickup latitude (in degrees)
-   * @param {Object} options.passenger - The passenger object. Only 'name' (String) and 'telephone' (String) are required
-   * @param {String} options.serviceAvailabilitiesId - The service id. It can be obtained using `applicationContext()`
-   * @param {Number} options.tip - The ride tip (in cents)
-   * @param {String} options.authToken - The authentication token
-   * @param {String} options.notes - Any notes to be sent to the cab driver
-   * @return {MyType} ride - An object containing the eta information. The fields returned are:
+   * @param {object} options - Options object parameter
+   * @param {number} options.pickUpLat - Pickup latitude (in degrees)
+   * @param {number} options.pickUpLon - Pickup latitude (in degrees)
+   * @param {object} options.passenger - The passenger object. Only 'name' (string) and 'telephone' (string) are required
+   * @param {string} options.serviceAvailabilitiesId - The service id. It can be obtained using `applicationContext()`
+   * @param {number} options.tip - The ride tip (in cents)
+   * @param {string} options.authToken - The authentication token
+   * @param {string} options.notes - Any notes to be sent to the cab driver
+   * @return {Promise} A promise that returns {@link RidePromise} if resolved and an object containing the error if rejected.
   */
   createRide({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId, tip=500, authToken='(null)', notes=''}) {
     _verifyRequiredParams({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId});
@@ -229,12 +321,6 @@ const flywheel = {
     });
   },
 
-  /**
-    a quite wonderful function
-    @param {object} - privacy gown
-    @param {object} - security
-    @returns {Promise} A promise that returns {@link MyType1} if resolved and an Object if rejected.
-  */
   getRideStatus({rideId, authToken}) {
     return _authorizedGetRequest({rideId, authToken}, '/rides/' + rideId, authToken);
   },

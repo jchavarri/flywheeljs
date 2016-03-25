@@ -19,11 +19,11 @@ describe('flywheel', () => {
         longitude: fixture.longitude
       })
       .then(response => {
-        expect(response.data.error).to.exist;
+        expect(response.error).to.exist;
         done();
       })
       .catch(response => {
-        expect(response.data.error).to.exist;
+        expect(response.error).to.exist;
         done();
       });
     });
@@ -43,7 +43,7 @@ describe('flywheel', () => {
         longitude: fixture.longitude
       })
       .then(response => {
-        expect(response.data.drivers).to.exist;
+        expect(response.drivers).to.exist;
         done();
       });
     });
@@ -56,10 +56,10 @@ describe('flywheel', () => {
         password: fixture.password
       })
       .then(response => {
-        expect(response.data.auth_token).to.exist;
-        expect(response.data.passenger.id).to.exist;
-        authToken = response.data.auth_token;
-        userId = response.data.passenger.id;
+        expect(response.auth_token).to.exist;
+        expect(response.passenger.id).to.exist;
+        authToken = response.auth_token;
+        userId = response.passenger.id;
         done();
       });
     });
@@ -76,8 +76,8 @@ describe('flywheel', () => {
         longitude: fixture.longitude
       })
       .then(response => {
-        expect(response.data.service_availabilities[0].id).to.exist;
-        serviceAvailabilitiesId = response.data.service_availabilities[0].id;
+        expect(response.service_availabilities[0].id).to.exist;
+        serviceAvailabilitiesId = response.service_availabilities[0].id;
         done();
       });
     });
@@ -90,7 +90,7 @@ describe('flywheel', () => {
         authToken: authToken
       })
       .then(response => {
-        expect(response.data.payment_instruments).to.exist;
+        expect(response.payment_instruments).to.exist;
         done();
       });
     });
@@ -107,8 +107,8 @@ describe('flywheel', () => {
         authToken: authToken
       })
       .then(response => {
-        expect(response.data.response[0].distance).to.exist;
-        expect(response.data.response[0].duration).to.exist;
+        expect(response.response[0].distance).to.exist;
+        expect(response.response[0].duration).to.exist;
         done();
       });
     });
@@ -129,13 +129,13 @@ describe('flywheel', () => {
         authToken: authToken
       })
       .then(response => {
-        expect(response.data.id).to.exist;
-        rideId = response.data.id;
+        expect(response.id).to.exist;
+        rideId = response.id;
         done();
       })
       .catch(response => {
-        expect(response.data.additional_information.ride_id).to.exist;
-        rideId = response.data.additional_information.ride_id;
+        expect(response.additional_information.ride_id).to.exist;
+        rideId = response.additional_information.ride_id;
         done();
       });
     });
@@ -151,7 +151,7 @@ describe('flywheel', () => {
         authToken: authToken
       })
       .catch(response => {
-        // expect(response.data.status).to.exist;
+        // expect(response.status).to.exist;
         done();
       });
     });
@@ -176,7 +176,7 @@ describe('flywheel', () => {
     //       authToken: authToken
     //     })
     //     .then(response => {
-    //       expect(response.data.status).to.equal('canceled');
+    //       expect(response.status).to.equal('canceled');
     //       done();
     //     });
     //   });
@@ -192,7 +192,7 @@ describe('flywheel', () => {
   //       authToken: authToken
   //     })
   //     .then(response => {
-  //       expect(response.data.status).to.equal('canceled');
+  //       expect(response.status).to.equal('canceled');
   //       done();
   //     });
   //   });
