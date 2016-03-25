@@ -84,7 +84,7 @@ flywheel.login({
 
 ## Documentation
 
-You will find all the documentation [here](docs/API).
+You will find all the documentation [here](docs/API.md).
 
 ## Contributing
 
