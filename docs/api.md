@@ -13,7 +13,25 @@
 <dd><p>A type definition.</p>
 </dd>
 <dt><a href="#SignupPromise">SignupPromise</a> : <code>object</code></dt>
-<dd><p>The type of the object returned with a successfuly resolved signup promise.</p>
+<dd><p>The type of the object returned with a successfully resolved signup promise.</p>
+</dd>
+<dt><a href="#SearchPromise">SearchPromise</a> : <code>object</code></dt>
+<dd><p>The type of the object returned with a successfully resolved search promise.</p>
+</dd>
+<dt><a href="#LoginPromise">LoginPromise</a> : <code>object</code></dt>
+<dd><p>The type of the object returned with a successfully resolved search promise.</p>
+</dd>
+<dt><a href="#ApplicationContextPromise">ApplicationContextPromise</a> : <code>object</code></dt>
+<dd><p>The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.</p>
+</dd>
+<dt><a href="#UserInfoPromise">UserInfoPromise</a> : <code>object</code></dt>
+<dd><p>The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.</p>
+</dd>
+<dt><a href="#ETAPromise">ETAPromise</a> : <code>object</code></dt>
+<dd><p>The type of the object returned with a successfully resolved search promise.</p>
+</dd>
+<dt><a href="#RidePromise">RidePromise</a> : <code>object</code></dt>
+<dd><p>The type of the object returned with a successfully resolved search promise. It includes a lot of properties, only the most interesting are documented here.</p>
 </dd>
 </dl>
 
@@ -26,13 +44,12 @@ The flywheeljs library main exported object
 
 * [flywheel](#flywheel) : <code>object</code>
     * [.signup(options)](#flywheel.signup) ⇒ <code>Promise</code>
-    * [.search(options)](#flywheel.search) ⇒ <code>object</code> &#124; <code>array</code>
-    * [.login(options)](#flywheel.login) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>object</code> &#124; <code>array</code>
-    * [.applicationContext(options)](#flywheel.applicationContext) ⇒ <code>object</code> &#124; <code>array</code> &#124; <code>object</code>
-    * [.userInfo(options)](#flywheel.userInfo) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>array</code>
-    * [.eta(options)](#flywheel.eta) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>array</code>
-    * [.createRide(options)](#flywheel.createRide) ⇒ <code>MyType</code>
-    * [.getRideStatus()](#flywheel.getRideStatus) ⇒ <code>Promise</code>
+    * [.search(options)](#flywheel.search) ⇒ <code>Promise</code>
+    * [.login(options)](#flywheel.login) ⇒ <code>Promise</code>
+    * [.applicationContext(options)](#flywheel.applicationContext) ⇒ <code>Promise</code>
+    * [.userInfo(options)](#flywheel.userInfo) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>Promise</code>
+    * [.eta(options)](#flywheel.eta) ⇒ <code>Promise</code>
+    * [.createRide(options)](#flywheel.createRide) ⇒ <code>Promise</code>
 
 <a name="flywheel.signup"></a>
 
@@ -71,11 +88,11 @@ flywheel.signup({
 ```
 <a name="flywheel.search"></a>
 
-### flywheel.search(options) ⇒ <code>object</code> &#124; <code>array</code>
-Search cabs
+### flywheel.search(options) ⇒ <code>Promise</code>
+Search for cabs around a given position
 
 **Kind**: static method of <code>[flywheel](#flywheel)</code>  
-**Returns**: <code>object</code> - search - An object containing:<code>array</code> - search.drivers - array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`.  
+**Returns**: <code>Promise</code> - A promise that returns [SearchPromise](#SearchPromise) if resolved and an object containing the error if rejected.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -88,11 +105,11 @@ Search cabs
 
 <a name="flywheel.login"></a>
 
-### flywheel.login(options) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>object</code> &#124; <code>array</code>
+### flywheel.login(options) ⇒ <code>Promise</code>
 Login a user
 
 **Kind**: static method of <code>[flywheel](#flywheel)</code>  
-**Returns**: <code>object</code> - login - An object containing:<code>string</code> - login.auth_token - The authentication token that can be used in subsequent requests<code>object</code> - login.passenger - An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`.<code>array</code> - login.scheduled_rides - array containing the user scheduled rides  
+**Returns**: <code>Promise</code> - A promise that returns [LoginPromise](#LoginPromise) if resolved and an object containing the error if rejected.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -102,11 +119,11 @@ Login a user
 
 <a name="flywheel.applicationContext"></a>
 
-### flywheel.applicationContext(options) ⇒ <code>object</code> &#124; <code>array</code> &#124; <code>object</code>
-Get application context given a specific location.
+### flywheel.applicationContext(options) ⇒ <code>Promise</code>
+Get some application context data given a specific location.
 
 **Kind**: static method of <code>[flywheel](#flywheel)</code>  
-**Returns**: <code>object</code> - applicationContext - An object containing the application context. The most interesting fields returned are:<code>array</code> - applicationContext.service_availabilities - An array of the services available at the given location. The service 'id' parameter is required for other requests (createRide, for example)<code>object</code> - applicationContext.on_board_cancellation_window - The amount of time (in secs) allowed to cancel a ride without being charged  
+**Returns**: <code>Promise</code> - A promise that returns [ApplicationContextPromise](#ApplicationContextPromise) if resolved and an object containing the error if rejected.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -117,11 +134,11 @@ Get application context given a specific location.
 
 <a name="flywheel.userInfo"></a>
 
-### flywheel.userInfo(options) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>array</code>
+### flywheel.userInfo(options) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>Promise</code>
 Get user info
 
 **Kind**: static method of <code>[flywheel](#flywheel)</code>  
-**Returns**: <code>object</code> - userInfo - An object containing the user information. The most interesting fields returned are:<code>string</code> - userInfo.id - The user (passenger) id<code>array</code> - userInfo.payment_instruments - An array with the payment instruments allowed by the user. The most useful field of each payment instrument is 'token'  
+**Returns**: <code>object</code> - userInfo - An object containing the user information. The most interesting fields returned are:<code>string</code> - userInfo.id - The user (passenger) id<code>Promise</code> - A promise that returns [UserInfoPromise](#UserInfoPromise) if resolved and an object containing the error if rejected.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -131,11 +148,11 @@ Get user info
 
 <a name="flywheel.eta"></a>
 
-### flywheel.eta(options) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>array</code>
+### flywheel.eta(options) ⇒ <code>Promise</code>
 Get estimated time of arrival
 
 **Kind**: static method of <code>[flywheel](#flywheel)</code>  
-**Returns**: <code>object</code> - eta - An object containing the eta information. The fields returned are:<code>string</code> - eta.status - "OK" if the location can be reached<code>array</code> - eta.response - An array that contains at least one object with the estimated durations. It has the following properties: 'duration' (in secs), 'duration_in_traffic' (in secs) and 'distance'  
+**Returns**: <code>Promise</code> - A promise that returns [ETAPromise](#ETAPromise) if resolved and an object containing the error if rejected.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -145,11 +162,11 @@ Get estimated time of arrival
 
 <a name="flywheel.createRide"></a>
 
-### flywheel.createRide(options) ⇒ <code>MyType</code>
+### flywheel.createRide(options) ⇒ <code>Promise</code>
 Create a new request for a ride
 
 **Kind**: static method of <code>[flywheel](#flywheel)</code>  
-**Returns**: <code>MyType</code> - ride - An object containing the eta information. The fields returned are:  
+**Returns**: <code>Promise</code> - A promise that returns [RidePromise](#RidePromise) if resolved and an object containing the error if rejected.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -161,19 +178,6 @@ Create a new request for a ride
 | options.tip | <code>number</code> | The ride tip (in cents) |
 | options.authToken | <code>string</code> | The authentication token |
 | options.notes | <code>string</code> | Any notes to be sent to the cab driver |
-
-<a name="flywheel.getRideStatus"></a>
-
-### flywheel.getRideStatus() ⇒ <code>Promise</code>
-a quite wonderful function
-
-**Kind**: static method of <code>[flywheel](#flywheel)</code>  
-**Returns**: <code>Promise</code> - A promise that returns [MyType1](MyType1) if resolved and an object if rejected.  
-
-| Type | Description |
-| --- | --- |
-| <code>object</code> | privacy gown |
-| <code>object</code> | security |
 
 <a name="MyType2"></a>
 
@@ -191,13 +195,144 @@ A type definition.
 <a name="SignupPromise"></a>
 
 ## SignupPromise : <code>object</code>
-The type of the object returned with a successfuly resolved signup promise.
+The type of the object returned with a successfully resolved signup promise.
 
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| auth_token | <code>string</code> | The token that can be used for future requests |
+| auth_token | <code>string</code> | The token that can be used to authenticate future requests |
 | passenger | <code>object</code> | An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`. |
+
+<a name="SearchPromise"></a>
+
+## SearchPromise : <code>object</code>
+The type of the object returned with a successfully resolved search promise.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| drivers | <code>array</code> | An array containing the drivers available at that location. Some relevant fields are: `id`, `vehicle`, `latitude` and `longitude`. |
+
+<a name="LoginPromise"></a>
+
+## LoginPromise : <code>object</code>
+The type of the object returned with a successfully resolved search promise.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| auth_token | <code>string</code> | The token that can be used to authenticate future requests |
+| passenger | <code>object</code> | An object including the user information. Some relevant fields are: `id`, `first_name`, `last_name`, and `email`. |
+| scheduled_rides | <code>object</code> | An array containing the user scheduled rides |
+
+<a name="ApplicationContextPromise"></a>
+
+## ApplicationContextPromise : <code>object</code>
+The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| service_availabilities | <code>array</code> | An array of the services available at the given location. The service 'id' parameter is required for other requests (createRide, for example) |
+| on_board_cancellation_window | <code>object</code> | The amount of time (in secs) allowed to cancel a ride without being charged |
+| application_details | <code>object</code> | Some applications details, like the url on the app store |
+| flywheel_service_fee | <code>number</code> | The fee charged by flywheel (in cents) |
+| hailing_distance | <code>number</code> | Max hailing distance in meters (?) |
+| maximum_hail_time | <code>number</code> | Max hail time in secs (before a request fails?) |
+| straight_line_approximation_speed | <code>number</code> | ? |
+| points_of_interest | <code>array</code> | ? |
+| alerts | <code>array</code> | ? |
+| on_board_cancellation_window | <code>number</code> | The amount of time (in secs) where a cancellation is not charged (?) |
+| gps_warning_distance | <code>number</code> | ? |
+| preferred_eta_provider | <code>string</code> | ? |
+| booked_ride_countdown_window | <code>number</code> | ? |
+| invite_friends | <code>object</code> | Referral rewards (in cents) |
+| time_zone_identifier | <code>string</code> | Time zone |
+| utc_offset | <code>number</code> | Offset (in secs) from UTC time |
+| share_eta_msg | <code>string</code> | Some string used in the app UI |
+| enable_asking_point | <code>bool</code> | ? |
+
+<a name="UserInfoPromise"></a>
+
+## UserInfoPromise : <code>object</code>
+The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The user (passenger) id |
+| first_name | <code>string</code> | The user first name |
+| last_name | <code>string</code> | The user last name |
+| email | <code>string</code> | The user email |
+| has_dummy_email | <code>bool</code> | True if the user has a dummy email (whatever that might mean) |
+| telephone | <code>string</code> | The user telephone |
+| canonical_telephone | <code>string</code> | ? |
+| addresses | <code>array</code> | The user addresses |
+| mobile_devices | <code>array</code> | The user mobile devices |
+| dispatch_service_accounts | <code>array</code> | ? |
+| default_tip_percent | <code>number</code> | Default tip percentage |
+| credit_balance | <code>number</code> | ? |
+| credits_since_last_session | <code>number</code> | ? |
+| payment_instruments | <code>array</code> | The payment instruments linked to this user. The payment object contains a property `token` that is required for creating rides |
+| payment_instruments_count | <code>number</code> | Number of payment instruments |
+| latest_ride_id | <code>string</code> | Latest ride id |
+| referral_code | <code>string</code> | Referral code for this user |
+| latest_ride_id | <code>string</code> | Latest ride id |
+| nonfatal_errors | <code>array</code> | ? |
+| disabled_features | <code>array</code> | ? |
+| oauth_id | <code>string</code> | ? |
+| oauth_provider | <code>string</code> | I guess Google, FB, etc. |
+| sms_verification_required | <code>bool</code> | ? |
+| is_agent_also | <code>bool</code> | ? |
+| added_by | <code>string</code> | ? |
+| special_characteristics | <code>array</code> | ? |
+| ivr_blocked | <code>bool</code> | ? |
+| newly_added | <code>bool</code> | ? |
+| suspended_upto | <code>object</code> | ? |
+
+<a name="ETAPromise"></a>
+
+## ETAPromise : <code>object</code>
+The type of the object returned with a successfully resolved search promise.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| status | <code>string</code> | "OK" if the location can be reached |
+| response | <code>array</code> | An array that contains at least one object with the estimated durations. It has the following properties: 'duration' (in secs), 'duration_in_traffic' (in secs) and 'distance' |
+
+<a name="RidePromise"></a>
+
+## RidePromise : <code>object</code>
+The type of the object returned with a successfully resolved search promise. It includes a lot of properties, only the most interesting are documented here.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The ride id |
+| notes | <code>string</code> | The notes attached to the ride, created by the user |
+| status | <code>string</code> | `hailing` if the ride is still to be assigned, `hail_accepted` if a cab accepted the ride |
+| failure_reason | <code>string</code> | The reason why the ride failed, if any |
+| client_created_at | <code>string</code> | Formatted creation date |
+| created_at | <code>number</code> | Creation timestamp |
+| updated_at | <code>number</code> | The reason why the ride failed |
+| passenger | <code>object</code> | An object with the same structure than [UserInfoPromise](#UserInfoPromise) |
+| pick_up_location | <code>object</code> | Pick up location |
+| drop_off_location | <code>object</code> | Drop off location (can be empty) |
+| hail | <code>object</code> | This object contains all details about the `hail`, including the driver information |
+| payment_instrument | <code>object</code> | The payment instrument used to pay for this ride |
 
