@@ -124,7 +124,7 @@ const flywheel = {
   },
 
   /**
-   * The type of the object returned with a successfully resolved search promise.
+   * The type of the object returned with a successfully resolved login promise.
    * @name LoginPromise
    * @typedef {object} LoginPromise
    * @property {string} auth_token - The token that can be used to authenticate future requests
@@ -194,7 +194,7 @@ const flywheel = {
   },
 
   /**
-   * The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.
+   * The type of the object returned with a successfully resolved user info promise. I added a question mark on those properties that are not clear to me.
    * @name UserInfoPromise
    * @typedef {object} UserInfoPromise
    * @property {string} id - The user (passenger) id
@@ -268,12 +268,12 @@ const flywheel = {
   },
 
   /**
-   * The type of the object returned with a successfully resolved search promise. It includes a lot of properties, only the most interesting are documented here.
+   * The type of the object returned with a successfully resolved ride promise. It includes a lot of properties, only the most interesting ones are documented here.
    * @name RidePromise
    * @typedef {object} RidePromise
    * @property {string} id - The ride id
    * @property {string} notes - The notes attached to the ride, created by the user
-   * @property {string} status - `hailing` if the ride is still to be assigned, `hail_accepted` if a cab accepted the ride
+   * @property {string} status - `hailing` if the ride is still to be assigned, `hail_accepted` if a cab driver accepted the ride, `canceled` if it's been canceled
    * @property {string} failure_reason - The reason why the ride failed, if any
    * @property {string} client_created_at - Formatted creation date
    * @property {number} created_at - Creation timestamp
@@ -321,10 +321,26 @@ const flywheel = {
     });
   },
 
+  /**
+   * Get the status of a specific ride
+   *
+   * @param {object} options - Options object parameter
+   * @param {number} options.rideId - The ride id
+   * @param {number} options.authToken - The authentication token
+   * @return {Promise} A promise that returns {@link RidePromise} if resolved and an object containing the error if rejected.
+  */
   getRideStatus({rideId, authToken}) {
     return _authorizedGetRequest({rideId, authToken}, '/rides/' + rideId, authToken);
   },
 
+  /**
+   * Cancel a specific ride
+   *
+   * @param {object} options - Options object parameter
+   * @param {number} options.rideId - The ride id
+   * @param {number} options.authToken - The authentication token
+   * @return {Promise} A promise that returns {@link RidePromise} if resolved and an object containing the error if rejected.
+  */
   cancelRide({rideId, authToken}) {
     _verifyRequiredParams({rideId, authToken});
     return ax.post('/rides/' + rideId + '/cancellation_contract', {

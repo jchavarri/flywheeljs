@@ -19,19 +19,19 @@
 <dd><p>The type of the object returned with a successfully resolved search promise.</p>
 </dd>
 <dt><a href="#LoginPromise">LoginPromise</a> : <code>object</code></dt>
-<dd><p>The type of the object returned with a successfully resolved search promise.</p>
+<dd><p>The type of the object returned with a successfully resolved login promise.</p>
 </dd>
 <dt><a href="#ApplicationContextPromise">ApplicationContextPromise</a> : <code>object</code></dt>
 <dd><p>The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.</p>
 </dd>
 <dt><a href="#UserInfoPromise">UserInfoPromise</a> : <code>object</code></dt>
-<dd><p>The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.</p>
+<dd><p>The type of the object returned with a successfully resolved user info promise. I added a question mark on those properties that are not clear to me.</p>
 </dd>
 <dt><a href="#ETAPromise">ETAPromise</a> : <code>object</code></dt>
 <dd><p>The type of the object returned with a successfully resolved search promise.</p>
 </dd>
 <dt><a href="#RidePromise">RidePromise</a> : <code>object</code></dt>
-<dd><p>The type of the object returned with a successfully resolved search promise. It includes a lot of properties, only the most interesting are documented here.</p>
+<dd><p>The type of the object returned with a successfully resolved ride promise. It includes a lot of properties, only the most interesting ones are documented here.</p>
 </dd>
 </dl>
 
@@ -50,6 +50,8 @@ The flywheeljs library main exported object
     * [.userInfo(options)](#flywheel.userInfo) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>Promise</code>
     * [.eta(options)](#flywheel.eta) ⇒ <code>Promise</code>
     * [.createRide(options)](#flywheel.createRide) ⇒ <code>Promise</code>
+    * [.getRideStatus(options)](#flywheel.getRideStatus) ⇒ <code>Promise</code>
+    * [.cancelRide(options)](#flywheel.cancelRide) ⇒ <code>Promise</code>
 
 <a name="flywheel.signup"></a>
 
@@ -179,6 +181,34 @@ Create a new request for a ride
 | options.authToken | <code>string</code> | The authentication token |
 | options.notes | <code>string</code> | Any notes to be sent to the cab driver |
 
+<a name="flywheel.getRideStatus"></a>
+
+### flywheel.getRideStatus(options) ⇒ <code>Promise</code>
+Get the status of a specific ride
+
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>Promise</code> - A promise that returns [RidePromise](#RidePromise) if resolved and an object containing the error if rejected.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | Options object parameter |
+| options.rideId | <code>number</code> | The ride id |
+| options.authToken | <code>number</code> | The authentication token |
+
+<a name="flywheel.cancelRide"></a>
+
+### flywheel.cancelRide(options) ⇒ <code>Promise</code>
+Cancel a specific ride
+
+**Kind**: static method of <code>[flywheel](#flywheel)</code>  
+**Returns**: <code>Promise</code> - A promise that returns [RidePromise](#RidePromise) if resolved and an object containing the error if rejected.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | Options object parameter |
+| options.rideId | <code>number</code> | The ride id |
+| options.authToken | <code>number</code> | The authentication token |
+
 <a name="MyType2"></a>
 
 ## MyType2 : <code>object</code>
@@ -220,7 +250,7 @@ The type of the object returned with a successfully resolved search promise.
 <a name="LoginPromise"></a>
 
 ## LoginPromise : <code>object</code>
-The type of the object returned with a successfully resolved search promise.
+The type of the object returned with a successfully resolved login promise.
 
 **Kind**: global typedef  
 **Properties**
@@ -263,7 +293,7 @@ The type of the object returned with a successfully resolved application context
 <a name="UserInfoPromise"></a>
 
 ## UserInfoPromise : <code>object</code>
-The type of the object returned with a successfully resolved application context promise. I added a question mark on those properties that are not clear to me.
+The type of the object returned with a successfully resolved user info promise. I added a question mark on those properties that are not clear to me.
 
 **Kind**: global typedef  
 **Properties**
@@ -316,7 +346,7 @@ The type of the object returned with a successfully resolved search promise.
 <a name="RidePromise"></a>
 
 ## RidePromise : <code>object</code>
-The type of the object returned with a successfully resolved search promise. It includes a lot of properties, only the most interesting are documented here.
+The type of the object returned with a successfully resolved ride promise. It includes a lot of properties, only the most interesting ones are documented here.
 
 **Kind**: global typedef  
 **Properties**
@@ -325,7 +355,7 @@ The type of the object returned with a successfully resolved search promise. It 
 | --- | --- | --- |
 | id | <code>string</code> | The ride id |
 | notes | <code>string</code> | The notes attached to the ride, created by the user |
-| status | <code>string</code> | `hailing` if the ride is still to be assigned, `hail_accepted` if a cab accepted the ride |
+| status | <code>string</code> | `hailing` if the ride is still to be assigned, `hail_accepted` if a cab driver accepted the ride, `canceled` if it's been canceled |
 | failure_reason | <code>string</code> | The reason why the ride failed, if any |
 | client_created_at | <code>string</code> | Formatted creation date |
 | created_at | <code>number</code> | Creation timestamp |
