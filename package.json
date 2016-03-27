@@ -10,7 +10,8 @@
     "watch": "gulp watch",
     "build": "gulp build",
     "coverage": "gulp coverage",
-    "docs": "jsdoc2md src/flywheel.js > docs/api.md"
+    "docs": "jsdoc2md src/flywheel.js > docs/api.md",
+    "prepublish": "npm run test && npm run docs && npm run build"
   },
   "repository": {
     "type": "git",

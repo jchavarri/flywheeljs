@@ -74,7 +74,7 @@ flywheel.signup({
   firstName: 'John',
   email: 'john@doe.com',
   password: 'johndoe123',
-  telephone: 'johndoe123',
+  telephone: '123123123',
   latitude: 37.615223,
   longitude: -122.389977
 })
