@@ -36,13 +36,6 @@ const _authorizedGetRequest = function(requiredParams, path, authToken) {
 The flywheeljs library main exported object
 @namespace {object} flywheel
 */
-/**
- * A type definition.
- * @name MyType2
- * @typedef {object} MyType2
- * @property {number} prop1 - one property
- * @property {string} prop2 - another property
- */
 const flywheel = {
 
   /**
@@ -233,8 +226,6 @@ const flywheel = {
    * @param {object} options - Options object parameter
    * @param {string} options.userId - The user id. It can be obtained from the 'passenger' object after logging in
    * @param {string} options.authToken - The authentication token
-   * @return {object} userInfo - An object containing the user information. The most interesting fields returned are:
-   * @return {string} userInfo.id - The user (passenger) id
    * @return {Promise} A promise that returns {@link UserInfoPromise} if resolved and an object containing the error if rejected.
   */
   userInfo({userId, authToken}) {

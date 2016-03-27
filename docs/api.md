@@ -9,9 +9,6 @@
 ## Typedefs
 
 <dl>
-<dt><a href="#MyType2">MyType2</a> : <code>object</code></dt>
-<dd><p>A type definition.</p>
-</dd>
 <dt><a href="#SignupPromise">SignupPromise</a> : <code>object</code></dt>
 <dd><p>The type of the object returned with a successfully resolved signup promise.</p>
 </dd>
@@ -47,7 +44,7 @@ The flywheeljs library main exported object
     * [.search(options)](#flywheel.search) ⇒ <code>Promise</code>
     * [.login(options)](#flywheel.login) ⇒ <code>Promise</code>
     * [.applicationContext(options)](#flywheel.applicationContext) ⇒ <code>Promise</code>
-    * [.userInfo(options)](#flywheel.userInfo) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>Promise</code>
+    * [.userInfo(options)](#flywheel.userInfo) ⇒ <code>Promise</code>
     * [.eta(options)](#flywheel.eta) ⇒ <code>Promise</code>
     * [.createRide(options)](#flywheel.createRide) ⇒ <code>Promise</code>
     * [.getRideStatus(options)](#flywheel.getRideStatus) ⇒ <code>Promise</code>
@@ -136,11 +133,11 @@ Get some application context data given a specific location.
 
 <a name="flywheel.userInfo"></a>
 
-### flywheel.userInfo(options) ⇒ <code>object</code> &#124; <code>string</code> &#124; <code>Promise</code>
+### flywheel.userInfo(options) ⇒ <code>Promise</code>
 Get user info
 
 **Kind**: static method of <code>[flywheel](#flywheel)</code>  
-**Returns**: <code>object</code> - userInfo - An object containing the user information. The most interesting fields returned are:<code>string</code> - userInfo.id - The user (passenger) id<code>Promise</code> - A promise that returns [UserInfoPromise](#UserInfoPromise) if resolved and an object containing the error if rejected.  
+**Returns**: <code>Promise</code> - A promise that returns [UserInfoPromise](#UserInfoPromise) if resolved and an object containing the error if rejected.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -208,19 +205,6 @@ Cancel a specific ride
 | options | <code>object</code> | Options object parameter |
 | options.rideId | <code>number</code> | The ride id |
 | options.authToken | <code>number</code> | The authentication token |
-
-<a name="MyType2"></a>
-
-## MyType2 : <code>object</code>
-A type definition.
-
-**Kind**: global typedef  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| prop1 | <code>number</code> | one property |
-| prop2 | <code>string</code> | another property |
 
 <a name="SignupPromise"></a>
 
