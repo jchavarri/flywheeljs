@@ -11,6 +11,6 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
-    "flywheeljs": "0.0.1"
+    "flywheeljs": "0.0.2"
   }
 }

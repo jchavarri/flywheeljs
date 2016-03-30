@@ -9,10 +9,6 @@ A Javascript wrapper to the [Flywheel](http://flywheel.com/) REST API, for both 
 
 **DISCLAIMER** This project is an independent work and has not been authorized, sponsored, or otherwise approved by Flywheel Software Inc.
 
-## Status
-
-The library is in a very early stage of development and is not suitable for usage yet.
-
 ## Promises
 
 flywheeljs depends on a native ES6 Promise implementation to be [supported](http://caniuse.com/promises).
