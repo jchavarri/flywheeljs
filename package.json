@@ -1,6 +1,6 @@
 {
   "name": "flywheeljs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Javascript client for the Flywheel REST API",
   "main": "dist/flywheel.js",
   "scripts": {
