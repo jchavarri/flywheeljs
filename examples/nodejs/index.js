@@ -52,10 +52,11 @@ program
     }
   });
 
-program
-  .command('status')
+var generateRideFunction = function(name, description, flywheelFunction) {
+  return program
+  .command(name)
   .option('-r, --rideId <rideId>', 'The ride id to request status for')
-  .description('get information about a Flywheel ride')
+  .description(description)
   .action(function(options){
     if (this.parent.username && this.parent.password && options.rideId) {
       flywheel.login({
@@ -63,7 +64,7 @@ program
         password: this.parent.password
       })
       .then(function(response) {
-        return flywheel.getRideStatus({
+        return flywheelFunction({
           rideId: options.rideId,
           authToken: response.auth_token
         });
@@ -72,6 +73,7 @@ program
         console.log(chalk.green('Success! 🚕\nYour ride information is:\n', JSON.stringify(response, null, '  ')));
       })
       .catch(function(error) {
+        console.log(error);
         console.log(chalk.red('There was an error:\n', JSON.stringify(error, null, '  ')));
       });
     }
@@ -79,6 +81,10 @@ program
       console.log('Missing params <username>, <password>, <rideId>');
     }
   });
+}
+
+generateRideFunction('status', 'get information about a Flywheel ride', flywheel.getRideStatus);
+generateRideFunction('cancel', 'cancel a Flywheel ride', flywheel.cancelRide);
 
 if (!process.argv.slice(2).length) {
   program.outputHelp();
