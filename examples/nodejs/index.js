@@ -1,6 +1,34 @@
-var flywheel = require('flywheeljs');
-var program = require('commander');
-var chalk = require('chalk');
+const flywheel = require('flywheeljs');
+const program = require('commander');
+const chalk = require('chalk');
+
+const untilSuccess = function(executor){
+  // From http://stackoverflow.com/a/35782428/617787
+  var beforeRetry = undefined;
+  var outerExecutor = function(succeed, reject){
+    var rejection_handler = function(err){
+      if(beforeRetry){
+        try {
+          var preRetryResult = beforeRetry(err);
+          if(preRetryResult) {
+            return succeed(preRetryResult);
+          }
+        } catch (preRetryError) {
+          return reject(preRetryError);
+        }
+      }
+      return new Promise(executor).then(succeed, rejection_handler);
+    }
+    return new Promise(executor).then(succeed, rejection_handler);
+  }
+
+  var outerPromise = new Promise(outerExecutor);
+  outerPromise.beforeRetry = function(func){
+    beforeRetry = func;
+    return outerPromise;
+  }
+  return outerPromise;
+};
 
 program
   .description('A nodejs tool to manage cabs from Flywheel')
@@ -35,20 +63,46 @@ program
   .option('-l, --latitude <latitude>', 'The latitude to request at (in degrees)')
   .option('-L, --longitude <longitude>', 'The latitude to request at (in degrees)')
   .action(function(options){
-    if (options.username && options.password) {
+    if (this.parent.username && this.parent.password) {
       flywheel.login({
-        email: options.username,
-        password: options.password
+        email: this.parent.username,
+        password: this.parent.password
       })
       .then(function(response) {
         console.log(response.auth_token);
         console.log(response.passenger.id);
+        var counter = 0;
+        const task = function(succ, reject){
+          setTimeout(function(){
+            if(++counter < 5)
+              reject(counter + " is too small!!");
+            else
+              succ(counter + " is just right");
+          }, 500); // simulated async task
+        }
+        return untilSuccess(task).beforeRetry(function(err){
+          console.log("failed attempt: " + err);
+        });
+
+        // return flywheel.createRide({
+        //   pickUpLat: fixture.latitude,
+        //   pickUpLon: fixture.longitude,
+        //   passenger: {
+        //     name: fixture.name,
+        //     phone: fixture.telephone
+        //   },
+        //   paymentToken: '(null)',
+        //   serviceAvailabilitiesId: serviceAvailabilitiesId,
+        //   tip: 500,
+        //   authToken: authToken
+        // });
       })
       .catch(function(error) {
         console.log('There was an error', error);
       });
-      console.log('user: %s pass: %s action: %s',
-          options.username, options.password, action);
+    }
+    else {
+      console.log('Some of these params are missing: <username>, <password>, <latitude>, <longitude>');
     }
   });
 
@@ -73,7 +127,6 @@ var generateRideFunction = function(name, description, flywheelFunction) {
         console.log(chalk.green('Success! 🚕\nYour ride information is:\n', JSON.stringify(response, null, '  ')));
       })
       .catch(function(error) {
-        console.log(error);
         console.log(chalk.red('There was an error:\n', JSON.stringify(error, null, '  ')));
       });
     }
