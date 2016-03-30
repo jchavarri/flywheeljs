@@ -334,12 +334,12 @@ const flywheel = {
   */
   cancelRide({rideId, authToken}) {
     _verifyRequiredParams({rideId, authToken});
-    return ax.post('/rides/' + rideId + '/cancellation_contract', {
+    var ridesUrl = '/rides/' + rideId;
+    return ax.post( ridesUrl + '/cancellation_contract', {
       auth_token: authToken
     })
     .then(response => {
-      const url = ridesUrl + rideId;
-      return ax.put(url, {
+      return ax.put(ridesUrl, {
         status: 'canceled',
         auth_token: authToken
       });
