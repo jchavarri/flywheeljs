@@ -96,15 +96,6 @@ Pull requests are welcomed. To get started:
 
 ## Todo
 
--   [x] split build to have node and browser versions
--   [x] gather information about other missing features (cancel request, add card, etc)
--   [x] add link to Flywheel site
--   [x] stop tracking 'dist' folder in git
--   [x] use axios params instead of harcoded strings for get requests
--   [x] add trip request function
--   [x] increase test coverage
 -   [ ] add delayed trip request
--   [ ] documentation
 -   [ ] 'examples' folder
 -   [ ] use npm instead of gulp (see this [library boilerplate](https://github.com/gaearon/library-boilerplate))
--   [ ] publish to npm

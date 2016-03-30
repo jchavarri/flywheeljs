@@ -1,0 +1,16 @@
+{
+  "name": "flywheel-node",
+  "version": "0.0.1",
+  "description": "Flywheeljs node example",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "commander": "^2.9.0",
+    "flywheeljs": "0.0.1"
+  }
+}
