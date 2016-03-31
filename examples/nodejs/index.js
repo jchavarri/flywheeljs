@@ -2,48 +2,20 @@ const flywheel = require('flywheeljs');
 const program = require('commander');
 const chalk = require('chalk');
 
-const untilSuccess = function(executor){
-  // From http://stackoverflow.com/a/35782428/617787
-  var beforeRetry = undefined;
-  var outerExecutor = function(succeed, reject){
-    var rejection_handler = function(err){
-      if(beforeRetry){
-        try {
-          var preRetryResult = beforeRetry(err);
-          if(preRetryResult) {
-            return succeed(preRetryResult);
-          }
-        } catch (preRetryError) {
-          return reject(preRetryError);
-        }
-      }
-      return new Promise(executor).then(succeed, rejection_handler);
-    }
-    return new Promise(executor).then(succeed, rejection_handler);
-  }
-
-  var outerPromise = new Promise(outerExecutor);
-  outerPromise.beforeRetry = function(func){
-    beforeRetry = func;
-    return outerPromise;
-  }
-  return outerPromise;
-};
-
 program
   .description('A nodejs tool to manage cabs from Flywheel')
   .version('0.0.1')
-  .option('-u, --username <username>', 'The user to authenticate as')
-  .option('-p, --password <password>', 'The user\'s password')
 
 program
   .command('account')
   .description('get information about your Flywheel account')
+  .option('-e, --email <email>', '[required] The email of the user to authenticate as')
+  .option('-p, --password <password>', '[required] The user\'s password')
   .action(function(options){
-    if (this.parent.username && this.parent.password) {
+    if (options.email && options.password) {
       flywheel.login({
-        email: this.parent.username,
-        password: this.parent.password
+        email: options.email,
+        password: options.password
       })
       .then(function(response) {
         console.log(chalk.green('Success! 😀\nAuth token:\n', response.auth_token, '\nYour user information is:\n', JSON.stringify(response.passenger, null, '  ')));
@@ -53,69 +25,103 @@ program
       });
     }
     else {
-      console.log('Missing values for <username> and <password>');
+      console.log(chalk.yellow('Missing values for <email> and <password>'));
     }
   });
 
 program
   .command('request')
   .description('request a new ride at a given location')
-  .option('-l, --latitude <latitude>', 'The latitude to request at (in degrees)')
-  .option('-L, --longitude <longitude>', 'The latitude to request at (in degrees)')
+  .option('-e, --email <email>', '[required] The email of the user to authenticate as')
+  .option('-p, --password <password>', '[required] The user\'s password')
+  .option('--latitude <latitude>', '[required] The latitude to request at (in degrees). Usage: --latitude=\'37.2241822\'')
+  .option('--longitude <longitude>', '[required] The latitude to request at (in degrees). Usage: --longitude=\'-121.2572231\'')
   .action(function(options){
-    if (this.parent.username && this.parent.password) {
+    var authToken = undefined;
+    if (options.email && options.password && options.latitude && options.longitude) {
       flywheel.login({
-        email: this.parent.username,
-        password: this.parent.password
+        email: options.email,
+        password: options.password
       })
       .then(function(response) {
-        console.log(response.auth_token);
-        console.log(response.passenger.id);
-        var counter = 0;
-        const task = function(succ, reject){
-          setTimeout(function(){
-            if(++counter < 5)
-              reject(counter + " is too small!!");
-            else
-              succ(counter + " is just right");
-          }, 500); // simulated async task
-        }
-        return untilSuccess(task).beforeRetry(function(err){
-          console.log("failed attempt: " + err);
+        authToken = response.auth_token;
+        return flywheel.applicationContext({
+          authToken: authToken,
+          latitude: options.latitude,
+          longitude: options.longitude
         });
-
-        // return flywheel.createRide({
-        //   pickUpLat: fixture.latitude,
-        //   pickUpLon: fixture.longitude,
-        //   passenger: {
-        //     name: fixture.name,
-        //     phone: fixture.telephone
-        //   },
-        //   paymentToken: '(null)',
-        //   serviceAvailabilitiesId: serviceAvailabilitiesId,
-        //   tip: 500,
-        //   authToken: authToken
-        // });
+      })
+      // .then(function(response) {
+      //   return flywheel.createRide({
+      //     pickUpLat: fixture.latitude,
+      //     pickUpLon: fixture.longitude,
+      //     passenger: {
+      //       name: fixture.name,
+      //       phone: fixture.telephone
+      //     },
+      //     paymentToken: '(null)',
+      //     serviceAvailabilitiesId: serviceAvailabilitiesId,
+      //     tip: 500,
+      //     authToken: authToken
+      //   });
+      // })
+      .then(function(response) {
+        if (!response.service_availabilities) {
+          throw new Error('There\'s no service available at those coordinates. Please check with another latitude and/or longitude');
+        }
+        var counter = 0;
+        var maxTrials = 5;
+        var timeBetweenTrials = 1 * 1000;
+        const retry = function() {
+          return new Promise(function (resolve) {
+            setTimeout(resolve, timeBetweenTrials);
+          })
+          .then(function() {
+            return flywheel.getRideStatus({
+              authToken: authToken
+            })
+            .then(function(response) {
+              counter++;
+              if (counter == 3) {
+                return response;
+              }
+              else if (!response.someRandom && counter < maxTrials) {
+                console.log("⏳ Waiting for a driver to accept the ride. Remaining attempts: " + (maxTrials - counter));
+                return retry();
+              }
+              else {
+                throw new Error('Too much time went by without a driver accepting the ride. Please cancel your ride using the \'cancel\' command or open the Flywheel app on your phone to handle this ride from there.');
+              }
+            });
+          });
+          return retryPromise;
+        }
+        return retry();
+      })
+      .then(function(response) {
+        console.log('There was a response', response);
       })
       .catch(function(error) {
-        console.log('There was an error', error);
+        console.log(chalk.red('There was an error: ⚠️\n', error));
       });
     }
     else {
-      console.log('Some of these params are missing: <username>, <password>, <latitude>, <longitude>');
+      console.log(chalk.yellow('Some of these params are missing: <email>, <password>, <latitude>, <longitude>. Use -h or --help to get some usage information'));
     }
   });
 
 var generateRideFunction = function(name, description, flywheelFunction) {
   return program
   .command(name)
-  .option('-r, --rideId <rideId>', 'The ride id to request status for')
   .description(description)
+  .option('-r, --rideId <rideId>', '[required] The ride id to request status for')
+  .option('-e, --email <email>', '[required] The email of the user to authenticate as')
+  .option('-p, --password <password>', '[required] The user\'s password')
   .action(function(options){
-    if (this.parent.username && this.parent.password && options.rideId) {
+    if (options.email && options.password && options.rideId) {
       flywheel.login({
-        email: this.parent.username,
-        password: this.parent.password
+        email: options.email,
+        password: options.password
       })
       .then(function(response) {
         return flywheelFunction({
@@ -127,11 +133,11 @@ var generateRideFunction = function(name, description, flywheelFunction) {
         console.log(chalk.green('Success! 🚕\nYour ride information is:\n', JSON.stringify(response, null, '  ')));
       })
       .catch(function(error) {
-        console.log(chalk.red('There was an error:\n', JSON.stringify(error, null, '  ')));
+        console.log(chalk.red('There was an error: ⚠️\n', JSON.stringify(error, null, '  ')));
       });
     }
     else {
-      console.log('Missing params <username>, <password>, <rideId>');
+      console.log(chalk.yellow('Missing params <email>, <password>, <rideId>. Use -h or --help to get some usage information'));
     }
   });
 }
@@ -139,8 +145,8 @@ var generateRideFunction = function(name, description, flywheelFunction) {
 generateRideFunction('status', 'get information about a Flywheel ride', flywheel.getRideStatus);
 generateRideFunction('cancel', 'cancel a Flywheel ride', flywheel.cancelRide);
 
+program.parse(process.argv);
+
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
-
-program.parse(process.argv);
