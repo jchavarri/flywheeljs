@@ -54,5 +54,5 @@ Params:
 - `--latitude='<latitude>'` - the latitude, in degrees
 - `--latitude='<longitude>'` - the longitude, in degrees
 
-**Warning** Please note the quotes around the latitude and longitude params. It's important to use that to avoid errors while parsing the command. For example: `node index.js request -e <email> -p <password> --latitude='37.2241822' --longitude='-121.2572231'`
+**Warning** Please note the quotes around the `latitude` and `longitude` params. It's important to use this syntax in order to avoid errors while parsing the command. For example: `node index.js request -e <email> -p <password> --latitude='37.2241822' --longitude='-121.2572231'`
 

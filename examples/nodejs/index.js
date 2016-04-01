@@ -36,8 +36,13 @@ program
   .option('-p, --password <password>', '[required] The user\'s password')
   .option('--latitude <latitude>', '[required] The latitude to request at (in degrees). Usage: --latitude=\'37.2241822\'')
   .option('--longitude <longitude>', '[required] The latitude to request at (in degrees). Usage: --longitude=\'-121.2572231\'')
+  .option('-t, --tip <tip>', '[optional] The tip for the ride, in cents. For example, for the minimum amount ($5) the param should be \'--tip 500\'')
+  .option('-n, --notes <notes>', '[optional] Some notes to add to the ride request. Use it with quotes: --notes \'Park below the white building\'')
   .action(function(options){
+    const tip = options.tip || 500;
+    const notes = options.notes || '';
     var authToken = undefined;
+    var passenger = undefined;
     if (options.email && options.password && options.latitude && options.longitude) {
       flywheel.login({
         email: options.email,
@@ -45,44 +50,52 @@ program
       })
       .then(function(response) {
         authToken = response.auth_token;
+        passenger = response.passenger;
         return flywheel.applicationContext({
           authToken: authToken,
           latitude: options.latitude,
           longitude: options.longitude
         });
       })
-      // .then(function(response) {
-      //   return flywheel.createRide({
-      //     pickUpLat: fixture.latitude,
-      //     pickUpLon: fixture.longitude,
-      //     passenger: {
-      //       name: fixture.name,
-      //       phone: fixture.telephone
-      //     },
-      //     paymentToken: '(null)',
-      //     serviceAvailabilitiesId: serviceAvailabilitiesId,
-      //     tip: 500,
-      //     authToken: authToken
-      //   });
-      // })
       .then(function(response) {
-        if (!response.service_availabilities) {
+        if (!response.service_availabilities || response.service_availabilities.length === 0) {
           throw new Error('There\'s no service available at those coordinates. Please check with another latitude and/or longitude');
         }
+        if (!passenger.payment_instruments || passenger.payment_instruments.length === 0) {
+          throw new Error('There are no payment instruments linked to this account. Please add a payment instrument from the Flywheel mobile app');
+        }
+        return flywheel.createRide({
+          pickUpLat: options.latitude,
+          pickUpLon: options.longitude,
+          passenger: {
+            name: passenger.name,
+            phone: passenger.telephone
+          },
+          paymentToken: passenger.payment_instruments[0].token,
+          serviceAvailabilitiesId: response.service_availabilities[0].id,
+          tip: tip,
+          notes: notes,
+          authToken: authToken
+        });
+      })
+      .then(function(response) {
+        console.log("🚕  Your request has been created! Your ride id is: " + response.id);
         var counter = 0;
-        var maxTrials = 5;
-        var timeBetweenTrials = 1 * 1000;
+        const timeout = 120;
+        const timeBetweenTrials = 2;
+        const maxTrials = timeout / timeBetweenTrials;
         const retry = function() {
           return new Promise(function (resolve) {
-            setTimeout(resolve, timeBetweenTrials);
+            setTimeout(resolve, timeBetweenTrials * 1000);
           })
           .then(function() {
             return flywheel.getRideStatus({
-              authToken: authToken
+              authToken: authToken,
+              rideId: response.id
             })
             .then(function(response) {
               counter++;
-              if (counter == 3) {
+              if (response.status === 'hail_accepted') {
                 return response;
               }
               else if (!response.someRandom && counter < maxTrials) {
@@ -99,7 +112,7 @@ program
         return retry();
       })
       .then(function(response) {
-        console.log('There was a response', response);
+        console.log('🔝🔝 Yay!! Your request has been accepted. These are the details:\n', response);
       })
       .catch(function(error) {
         console.log(chalk.red('There was an error: ⚠️\n', error));
