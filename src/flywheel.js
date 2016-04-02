@@ -2,6 +2,10 @@ import axios from 'axios';
 
 const ax = axios.create({
   baseURL: 'https://mobile.flywheel.com',
+  headers: {
+    'User-Agent': 'Flywheel/1277 CFNetwork/758.2.8 Darwin/15.0.0',
+    'FLY-GeoCoordinate': '37.773972, -122.431297'
+  }
 });
 
 // We pass the data to the promises objects, not the status, headers and config
@@ -79,8 +83,8 @@ const flywheel = {
       email: email,
       password: password,
       telephone: telephone,
-      latitude: latitude,
-      longitude: longitude,
+      latitude: parseFloat(latitude),
+      longitude: parseFloat(longitude),
       adjust_xid_type: 'idfa',
       adjust_xid: '12345678-1234-1234-1234-123456789012',
       persistent_device_id: '12345678-1234-1234-1234-123456789012'
@@ -109,8 +113,8 @@ const flywheel = {
       params: {
         by: by,
         filter: filter,
-        latitude: latitude,
-        longitude: longitude,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
         auth_token: authToken
       }
     });
@@ -179,8 +183,8 @@ const flywheel = {
         platform: 'ios',
         version: '5.6.7',
         platform_version: '9.2.1',
-        latitude: latitude,
-        longitude: longitude,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
         auth_token: authToken
       }
     });
@@ -294,8 +298,8 @@ const flywheel = {
     return ax.post('/rides', {
       source: 'Mobile:iOS:5.6.7:Flywheel',
       pick_up_location: {
-        latitude: pickUpLat,
-        longitude: pickUpLon
+        latitude: parseFloat(pickUpLat),
+        longitude: parseFloat(pickUpLon)
       },
       guaranteed_tip_details: {
         type: 'cents',
