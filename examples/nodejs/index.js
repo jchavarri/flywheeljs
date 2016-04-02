@@ -115,7 +115,7 @@ program
         console.log('🔝🔝 Yay!! Your request has been accepted. These are the details:\n', response);
       })
       .catch(function(error) {
-        console.log(chalk.red('There was an error: ⚠️\n', error));
+        console.log(chalk.red('There was an error: ⚠️\n', JSON.stringify(error, null, '  ')));
       });
     }
     else {
