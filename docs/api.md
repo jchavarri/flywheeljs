@@ -172,6 +172,10 @@ Create a new request for a ride
 | options | <code>object</code> | Options object parameter |
 | options.pickUpLat | <code>number</code> | Pickup latitude (in degrees) |
 | options.pickUpLon | <code>number</code> | Pickup latitude (in degrees) |
+| options.address | <code>string</code> | The pickup address, for example: "22 Estate Ct". Use some geocoding service like google maps to obtain it: http://maps.googleapis.com/maps/api/geocode/json?address=<user_typed_address> |
+| options.state | <code>string</code> | The state short name, for example: "CA". Use some geocoding service like google maps to obtain it: http://maps.googleapis.com/maps/api/geocode/json?address=<user_typed_address> |
+| options.country | <code>string</code> | The country name, for example: "United States". Use some geocoding service like google maps to obtain it: http://maps.googleapis.com/maps/api/geocode/json?address=<user_typed_address> |
+| options.city | <code>string</code> | The city name, for example: "South San Francisco". Use some geocoding service like google maps to obtain it: http://maps.googleapis.com/maps/api/geocode/json?address=<user_typed_address> |
 | options.passenger | <code>object</code> | The passenger object. Only 'name' (string) and 'telephone' (string) are required |
 | options.serviceAvailabilitiesId | <code>string</code> | The service id. It can be obtained using `applicationContext()` |
 | options.tip | <code>number</code> | The ride tip (in cents) |

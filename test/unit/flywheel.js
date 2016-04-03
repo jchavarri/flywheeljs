@@ -119,6 +119,10 @@ describe('flywheel', () => {
       flywheel.createRide({
         pickUpLat: fixture.latitude,
         pickUpLon: fixture.longitude,
+        address: fixture.address,
+        state: fixture.state,
+        country: fixture.country,
+        city: fixture.city,
         passenger: {
           name: fixture.name,
           phone: fixture.telephone

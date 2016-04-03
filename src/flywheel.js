@@ -2,10 +2,6 @@ import axios from 'axios';
 
 const ax = axios.create({
   baseURL: 'https://mobile.flywheel.com',
-  headers: {
-    'User-Agent': 'Flywheel/1277 CFNetwork/758.2.8 Darwin/15.0.0',
-    'FLY-GeoCoordinate': '37.773972, -122.431297'
-  }
 });
 
 // We pass the data to the promises objects, not the status, headers and config
@@ -285,6 +281,10 @@ const flywheel = {
    * @param {object} options - Options object parameter
    * @param {number} options.pickUpLat - Pickup latitude (in degrees)
    * @param {number} options.pickUpLon - Pickup latitude (in degrees)
+   * @param {string} options.address - The pickup address, for example: "22 Estate Ct". Use some geocoding service like google maps to obtain it: http://maps.googleapis.com/maps/api/geocode/json?address=<user_typed_address>
+   * @param {string} options.state - The state short name, for example: "CA". Use some geocoding service like google maps to obtain it: http://maps.googleapis.com/maps/api/geocode/json?address=<user_typed_address>
+   * @param {string} options.country - The country name, for example: "United States". Use some geocoding service like google maps to obtain it: http://maps.googleapis.com/maps/api/geocode/json?address=<user_typed_address>
+   * @param {string} options.city - The city name, for example: "South San Francisco". Use some geocoding service like google maps to obtain it: http://maps.googleapis.com/maps/api/geocode/json?address=<user_typed_address>
    * @param {object} options.passenger - The passenger object. Only 'name' (string) and 'telephone' (string) are required
    * @param {string} options.serviceAvailabilitiesId - The service id. It can be obtained using `applicationContext()`
    * @param {number} options.tip - The ride tip (in cents)
@@ -292,14 +292,18 @@ const flywheel = {
    * @param {string} options.notes - Any notes to be sent to the cab driver
    * @return {Promise} A promise that returns {@link RidePromise} if resolved and an object containing the error if rejected.
   */
-  createRide({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId, tip=500, authToken='(null)', notes=''}) {
-    _verifyRequiredParams({pickUpLat, pickUpLon, passenger, paymentToken, serviceAvailabilitiesId});
+  createRide({pickUpLat, pickUpLon, address, state, country, city, passenger, paymentToken, serviceAvailabilitiesId, tip=500, authToken='(null)', notes=''}) {
+    _verifyRequiredParams({pickUpLat, pickUpLon, address, state, country, city, passenger, paymentToken, serviceAvailabilitiesId});
     const clientCreatedAt = new Date().toISOString().replace(/T/g,'-').slice(0, -5);
     return ax.post('/rides', {
       source: 'Mobile:iOS:5.6.7:Flywheel',
       pick_up_location: {
         latitude: parseFloat(pickUpLat),
-        longitude: parseFloat(pickUpLon)
+        longitude: parseFloat(pickUpLon),
+        address_1: address,
+        state: state,
+        country: country,
+        city: city,
       },
       guaranteed_tip_details: {
         type: 'cents',

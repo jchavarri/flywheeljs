@@ -4,8 +4,12 @@
     "email": "aflywheel@gmail.com",
     "password": "afx84gjgJ",
     "telephone": "0012345678901",
-    "latitude": 37.773972,
-    "longitude": -122.431297,
+    "latitude": 37.663685,
+    "longitude": -122.4323665,
+    "address": "22 Estate Ct",
+    "state": "CA",
+    "country": "United States",
+    "city": "South San Francisco",
     "origin": "37.648622,-122.450145",
     "destination": "37.663732,-122.432433"
   }
