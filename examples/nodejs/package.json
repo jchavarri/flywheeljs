@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.9.1",
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
     "flywheeljs": "0.0.2"
